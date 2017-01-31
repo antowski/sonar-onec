@@ -2,7 +2,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   
-  <groupId>antowski</groupId>
+  <groupId>org.antowski.onec</groupId>
   <artifactId>onec</artifactId>
   <version>0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
@@ -58,7 +58,7 @@
       <artifactId>sslr-core</artifactId>
       <version>${sslr.version}</version>
     </dependency>
-    
+
     <dependency>
       <groupId>org.sonarsource.sslr-squid-bridge</groupId>
       <artifactId>sslr-squid-bridge</artifactId>
@@ -111,13 +111,13 @@
         <version>${commons.io.version}</version>
     </dependency>
 
+    <!--
     <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
         <version>${guava.version}</version>
     </dependency>
 
-    <!--
     <dependency>
         <groupId>com.google.code.gson</groupId>
         <artifactId>gson</artifactId>
