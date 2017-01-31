@@ -18,6 +18,9 @@
     
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     
+  <sonar.pluginClass>org.antowski.plugins.onec.OneCPlugin</sonar.pluginClass>
+    <sonar.pluginName>1C:Enterprise 7.7</sonar.pluginName>
+
     <!-- versions -->
     
     <sonar.apiVersion>5.6</sonar.apiVersion>
@@ -33,7 +36,7 @@
     <sonarlint-core.version>2.4.1</sonarlint-core.version>
     <sslr.version>1.21</sslr.version>
     <sslr-squid-bridge.version>2.6.1</sslr-squid-bridge.version>
-    <guava.version>19.0</guava.version>
+    <guava.version>21.0</guava.version>
     <gson.version>2.6.2</gson.version>
 
   </properties>
@@ -48,6 +51,44 @@
       <version>${sonar.apiVersion}</version>
       <!-- mandatory scope -->
       <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.sonarsource.sslr</groupId>
+      <artifactId>sslr-core</artifactId>
+      <version>${sslr.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.sonarsource.sslr-squid-bridge</groupId>
+      <artifactId>sslr-squid-bridge</artifactId>
+      <version>${sslr-squid-bridge.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.codehaus.sonar.sslr</groupId>
+          <artifactId>sslr-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.codehaus.sonar.sslr</groupId>
+          <artifactId>sslr-xpath</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.codehaus.sonar</groupId>
+          <artifactId>sonar-plugin-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.picocontainer</groupId>
+          <artifactId>picocontainer</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>jcl-over-slf4j</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
@@ -76,54 +117,19 @@
         <version>${guava.version}</version>
     </dependency>
 
+    <!--
     <dependency>
         <groupId>com.google.code.gson</groupId>
         <artifactId>gson</artifactId>
         <version>${gson.version}</version>
     </dependency>
+    -->
 
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
       <version>${assertj.version}</version>
     </dependency> 
-
-    <dependency>
-        <groupId>org.sonarsource.sslr</groupId>
-        <artifactId>sslr-core</artifactId>
-        <version>${sslr.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.sonarsource.sslr-squid-bridge</groupId>
-        <artifactId>sslr-squid-bridge</artifactId>
-        <version>${sslr-squid-bridge.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.codehaus.sonar.sslr</groupId>
-            <artifactId>sslr-core</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.codehaus.sonar.sslr</groupId>
-            <artifactId>sslr-xpath</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.codehaus.sonar</groupId>
-            <artifactId>sonar-plugin-api</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.picocontainer</groupId>
-            <artifactId>picocontainer</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
 
   </dependencies>
 

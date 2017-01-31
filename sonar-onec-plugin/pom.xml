@@ -16,6 +16,11 @@
   <name>Onec :: Sonar Plugin</name>
   <description>1C:Enterprise 7.7 language plugin</description>
 
+  <properties>
+    <sonar.pluginClass>org.antowski.plugins.onec.OneCPlugin</sonar.pluginClass>
+    <sonar.pluginName>1C:Enterprise 7.7</sonar.pluginName>
+  </properties>
+
   <dependencies>
 
     <dependency>
@@ -48,10 +53,12 @@
       <artifactId>junit</artifactId>
     </dependency>
 
+    <!-- 
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
     </dependency>
+    -->
     
   </dependencies>
 

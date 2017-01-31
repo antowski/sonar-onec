@@ -9,3 +9,6 @@ Desktop.ini
 
 # ---- Sonar
 .sonar
+
+# visual studio code
+.vscode
