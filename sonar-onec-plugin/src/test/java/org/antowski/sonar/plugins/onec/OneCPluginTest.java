@@ -1,4 +1,4 @@
-package antowski.sonar.plugin;
+package org.antowski.sonar.plugins.onec;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
