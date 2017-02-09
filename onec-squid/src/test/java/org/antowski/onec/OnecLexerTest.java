@@ -52,6 +52,7 @@ public class OnecLexerTest {
     assertThat(lexer.lex("// my comment \n new line"), hasComment("// my comment "));
     assertThat(lexer.lex("// мой комментарий \n new line"), hasComment("// мой комментарий "));
     assertThat(lexer.lex("В одной строке код // и комментарий \n следующая строка"), hasComment("// и комментарий "));
+    assertThat(lexer.lex("Много слешей подряд = один комментарий ////////////"), hasComment("////////////"));
   }
   
 }

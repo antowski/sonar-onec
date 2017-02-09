@@ -28,14 +28,14 @@ import org.sonar.api.resources.AbstractLanguage;
 
 public class OneC extends AbstractLanguage {
 
-  public static final String KEY = "1C 7.7";
+  public static final String KEY = "1c 7.7";
 
-  private static final String[] DEFAULT_FILE_SUFFIXES = { "1s" };
+  private static final String[] DEFAULT_FILE_SUFFIXES = { ".1s" };
 
   private Settings settings;
 
   public OneC(Settings settings) {
-    super(KEY, "OneC");
+    super(KEY, "1C:Enterprise 7.7");
     this.settings = settings;
   }
 

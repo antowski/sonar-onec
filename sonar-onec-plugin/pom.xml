@@ -26,9 +26,6 @@
     <dependency>
       <groupId>org.sonarsource.sonarqube</groupId>
       <artifactId>sonar-plugin-api</artifactId>
-      <!-- minimal version of SonarQube to support. Note that the groupId was "org.codehaus.sonar" before version 5.2 -->
-      <version>5.6</version>
-      <!-- mandatory scope -->
       <scope>provided</scope>
     </dependency>
 

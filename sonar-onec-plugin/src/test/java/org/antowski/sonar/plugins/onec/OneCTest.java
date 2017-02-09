@@ -20,38 +20,27 @@
 
 package org.antowski.sonar.plugins.onec;
 
-import org.sonar.api.Plugin;
-import org.sonar.api.config.PropertyDefinition;
-import org.sonar.api.resources.Qualifiers;
+import org.junit.Test;
+import org.sonar.api.config.MapSettings;
+import org.sonar.api.config.Settings;
 
-/**
- * This class is the entry point for all extensions. It is referenced in pom.xml.
- */
-public class OneCPlugin implements Plugin {
+import static org.assertj.core.api.Assertions.assertThat;
 
-  private static final String GENERAL = "General";
+public class OneCTest {
 
-  public static final String FILE_SUFFIXES_KEY = "antowski.onec.file.suffixes";
+  @Test
+  public void should_return_file_suffixes() {
 
-  @Override
-  public void define(Context context) {
-    
-    context.addExtensions(
+    Settings settings = new MapSettings();
+    OneC language = new OneC(settings);
 
-      PropertyDefinition.builder(FILE_SUFFIXES_KEY)
-        .name("File Suffixes")
-        .description("Comma-separated list of suffixes of 1C 7.7 Enterprise files to analyze.")
-        .subCategory(GENERAL)
-        .onQualifiers(Qualifiers.PROJECT)
-        .defaultValue("1s")
-        .build(),
+    // default
+    assertThat(language.getFileSuffixes()).containsOnly(".1s");
 
-      OneC.class,
-      OneCSquidSensor.class,
-      OneCQualityProfile.class
-      
-      );
-   
+    settings.setProperty(OneCPlugin.FILE_SUFFIXES_KEY, "");
+    assertThat(language.getFileSuffixes()).containsOnly(".1s");
+
+    settings.setProperty(OneCPlugin.FILE_SUFFIXES_KEY, ".bar, .foo");
+    assertThat(language.getFileSuffixes()).containsOnly(".bar", ".foo");
   }
-
 }
