@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.sonar.api.batch.sensor.Sensor;
 import org.sonar.api.batch.sensor.SensorContext;
@@ -36,6 +37,8 @@ import org.sonar.api.utils.log.Logger;
 import org.sonar.api.batch.fs.FilePredicate;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.InputFile;
+
+import org.sonar.squidbridge.ProgressReport;
 
 public class OneCSquidSensor implements Sensor {
 
@@ -53,22 +56,49 @@ public class OneCSquidSensor implements Sensor {
 
         FileSystem fileSystem = context.fileSystem();
 
-
         FilePredicate OneCFilePredicate = fileSystem.predicates().and(
             fileSystem.predicates().hasLanguage(OneC.KEY));
         
         ArrayList<InputFile> inputFiles = Lists.newArrayList(fileSystem.inputFiles(OneCFilePredicate));
 
-        for (InputFile inputFile : inputFiles) {
-            analyseFile(context, inputFile);
-        }
+        ProgressReport progressReport = new ProgressReport("Report about progress of 1C:7.7 analyzer", TimeUnit.SECONDS.toMillis(10));
+        progressReport.start(Lists.newArrayList(fileSystem.files(OneCFilePredicate)));
 
+        analyseFiles(context, inputFiles, progressReport);
+
+    }
+
+    void analyseFiles(SensorContext context, List<InputFile> inputFiles, ProgressReport progressReport){
+        
+        boolean success = false;
+        
+        try {
+        
+            for (InputFile inputFile : inputFiles) {
+                progressReport.nextFile();
+                analyseFile(context, inputFile);
+            }
+
+            success = true;
+            
+        } finally {
+            stopProgressReport(progressReport, success);
+        }
+       
     }
 
     private void analyseFile(SensorContext context, InputFile inputFile) {
         mLogger.info("analyse file '" + inputFile.absolutePath() + "'\n"
             + "\t language: " + inputFile.language() + "\n"
             + "\t charset: " + inputFile.charset());
+    }
+
+    private static void stopProgressReport(ProgressReport progressReport, boolean success) {
+        if (success) {
+            progressReport.stop();
+        } else {
+            progressReport.cancel();
+        }
     }
 
     @Override
