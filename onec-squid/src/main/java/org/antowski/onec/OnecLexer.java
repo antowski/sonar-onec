@@ -33,9 +33,9 @@ import static com.sonar.sslr.impl.channel.RegexpChannelBuilder.commentRegexp;
 
 import com.google.common.base.Charsets;
 
-public final class OnecLexer {
+public final class OneCLexer {
 
-  private OnecLexer() {
+  private OneCLexer() {
   }
 
   //public static Lexer create(PythonConfiguration conf) {

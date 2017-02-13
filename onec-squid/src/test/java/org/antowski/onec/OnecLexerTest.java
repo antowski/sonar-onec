@@ -37,14 +37,14 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
-public class OnecLexerTest {
+public class OneCLexerTest {
 
   private static Lexer lexer;
 
   @BeforeClass
   public static void init() {
     //lexer = OnecLexer.create(new PythonConfiguration(Charsets.UTF_8));
-    lexer = OnecLexer.create();
+    lexer = OneCLexer.create();
   }
 
   @Test
