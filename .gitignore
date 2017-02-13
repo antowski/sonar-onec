@@ -12,3 +12,11 @@ Desktop.ini
 
 # visual studio code
 .vscode
+
+# ---- InteliJ IDEA
+.idea
+*.iml
+
+# java
+javac-services.0.log
+javac-services.0.log.lck

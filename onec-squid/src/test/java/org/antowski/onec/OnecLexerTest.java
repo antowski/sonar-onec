@@ -20,21 +20,11 @@
 
 package org.antowski.onec;
 
-import com.google.common.base.Charsets;
-import com.google.common.collect.ImmutableSet;
-import com.sonar.sslr.api.GenericTokenType;
-import com.sonar.sslr.api.Token;
 import com.sonar.sslr.impl.Lexer;
-import java.util.List;
-import java.util.Set;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static com.sonar.sslr.test.lexer.LexerMatchers.hasComment;
-import static com.sonar.sslr.test.lexer.LexerMatchers.hasToken;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
 public class OneCLexerTest {

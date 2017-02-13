@@ -44,19 +44,13 @@ import org.sonar.squidbridge.api.SourceFile;
 
 public class FileLinesVisitor extends SquidAstVisitor<Grammar> implements AstAndTokenVisitor {
 
-    private final FileLinesContextFactory fileLinesContextFactory;
-
     private Set<Integer> linesOfCode = Sets.newHashSet();
     private Set<Integer> linesOfComments = Sets.newHashSet();
 
     private final FileSystem fileSystem;
     private final Map<InputFile, Set<Integer>> allLinesOfCode;
 
-    public FileLinesVisitor(
-        FileLinesContextFactory fileLinesContextFactory,
-        FileSystem fileSystem,
-        Map<InputFile, Set<Integer>> linesOfCode) {
-        this.fileLinesContextFactory = fileLinesContextFactory;
+    public FileLinesVisitor(FileSystem fileSystem, Map<InputFile, Set<Integer>> linesOfCode) {
         this.fileSystem = fileSystem;
         this.allLinesOfCode = linesOfCode;    
     }
@@ -69,6 +63,7 @@ public class FileLinesVisitor extends SquidAstVisitor<Grammar> implements AstAnd
 
     @Override
     public void visitToken(Token token) {
+
         if (token.getType().equals(GenericTokenType.EOF)) {
             return;
         }
@@ -89,18 +84,9 @@ public class FileLinesVisitor extends SquidAstVisitor<Grammar> implements AstAnd
         if (inputFile == null){
             throw new IllegalStateException("InputFile is null, but it should not be.");
         }
-        FileLinesContext fileLinesContext = fileLinesContextFactory.createFor(inputFile);
-
-        for (int line : linesOfCode) {
-            fileLinesContext.setIntValue(CoreMetrics.NCLOC_DATA_KEY, line, 1);
-        }
-        for (int line : linesOfComments) {
-            fileLinesContext.setIntValue(CoreMetrics.COMMENT_LINES, line, 1);
-        }
-        fileLinesContext.save();
-
+        
         allLinesOfCode.put(inputFile, ImmutableSet.copyOf(linesOfCode));
-
+        
         getContext().peekSourceCode().add(OneCMetric.LINES_OF_CODE, linesOfCode.size());
         getContext().peekSourceCode().add(OneCMetric.COMMENT_LINES, linesOfComments.size());
 
