@@ -1,5 +1,5 @@
 /*
- * 1C:Enterprise 7.7 language plugin for SonarQube
+ * SonarQube 1C:Enterprise 7.7 Plugin
  * Copyright (C) 2017 antowski
  * mailto:antowski AT gmail DOT com
  *
@@ -17,7 +17,6 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
 package org.antowski.onec;
 
 import com.google.common.collect.ImmutableSet;
@@ -44,13 +43,19 @@ import org.sonar.squidbridge.api.SourceFile;
 
 public class FileLinesVisitor extends SquidAstVisitor<Grammar> implements AstAndTokenVisitor {
 
+    private final FileLinesContextFactory fileLinesContextFactory;
+
     private Set<Integer> linesOfCode = Sets.newHashSet();
     private Set<Integer> linesOfComments = Sets.newHashSet();
 
     private final FileSystem fileSystem;
     private final Map<InputFile, Set<Integer>> allLinesOfCode;
 
-    public FileLinesVisitor(FileSystem fileSystem, Map<InputFile, Set<Integer>> linesOfCode) {
+    public FileLinesVisitor(
+        FileLinesContextFactory fileLinesContextFactory, 
+        FileSystem fileSystem, 
+        Map<InputFile, Set<Integer>> linesOfCode) {
+        this.fileLinesContextFactory = fileLinesContextFactory;
         this.fileSystem = fileSystem;
         this.allLinesOfCode = linesOfCode;    
     }

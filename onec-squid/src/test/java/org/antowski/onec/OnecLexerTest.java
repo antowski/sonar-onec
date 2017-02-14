@@ -1,5 +1,5 @@
 /*
- * 1C:Enterprise 7.7 language plugin for SonarQube
+ * SonarQube 1C:Enterprise 7.7 Plugin
  * Copyright (C) 2017 antowski
  * mailto:antowski AT gmail DOT com
  *
@@ -17,14 +17,15 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
 package org.antowski.onec;
 
+import com.google.common.base.Charsets;
+
 import com.sonar.sslr.impl.Lexer;
+import static com.sonar.sslr.test.lexer.LexerMatchers.hasComment;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import static com.sonar.sslr.test.lexer.LexerMatchers.hasComment;
 import static org.junit.Assert.assertThat;
 
 public class OneCLexerTest {
@@ -33,8 +34,7 @@ public class OneCLexerTest {
 
   @BeforeClass
   public static void init() {
-    //lexer = OnecLexer.create(new PythonConfiguration(Charsets.UTF_8));
-    lexer = OneCLexer.create();
+    lexer = OneCLexer.create(new OneCConfiguration(Charsets.UTF_8));
   }
 
   @Test

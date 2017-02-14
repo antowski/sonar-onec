@@ -9,8 +9,7 @@
   </parent>
 
   <artifactId>onec-checks</artifactId>
-  <version>0.1-SNAPSHOT</version>
-
+  
   <name>Onec :: Checks</name>
   
   <dependencies>

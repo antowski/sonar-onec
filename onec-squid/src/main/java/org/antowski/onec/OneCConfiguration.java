@@ -17,27 +17,25 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.antowski.sonar.plugins.onec;
+package org.antowski.onec;
 
-import org.junit.Test;
-import org.sonar.api.Plugin;
-import org.sonar.api.SonarQubeSide;
-import org.sonar.api.SonarRuntime;
-import org.sonar.api.internal.SonarRuntimeImpl;
-import org.sonar.api.utils.Version;
+import java.nio.charset.Charset;
+import org.sonar.squidbridge.api.SquidConfiguration;
 
-import static org.assertj.core.api.Assertions.assertThat;
+public class OneCConfiguration extends SquidConfiguration {
 
-public class OneCPluginTest {
+    private boolean ignoreHeaderComments;
 
-    @Test
-    public void testGetExtensions() {
+    public OneCConfiguration(Charset charset) {
+        super(charset);
+    }
 
-        Plugin.Context context = new Plugin.Context(SonarRuntimeImpl.forSonarQube(Version.create(6, 2), SonarQubeSide.SERVER));
-        new OneCPlugin().define(context);
+    public void setIgnoreHeaderComments(boolean ignoreHeaderComments) {
+        this.ignoreHeaderComments = ignoreHeaderComments;
+    }
 
-        assertThat(context.getExtensions()).hasSize(4);
-
+    public boolean getIgnoreHeaderComments() {
+        return ignoreHeaderComments;
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * 1C:Enterprise 7.7 language plugin for SonarQube
+ * SonarQube 1C:Enterprise 7.7 Plugin
  * Copyright (C) 2017 antowski
  * mailto:antowski AT gmail DOT com
  *
@@ -17,7 +17,6 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
 package org.antowski.onec;
 
 import com.sonar.sslr.api.Grammar;
@@ -28,9 +27,9 @@ public final class OneCParser {
   private OneCParser() {
   }
 
-  public static Parser<Grammar> create() {
+  public static Parser<Grammar> create(OneCConfiguration conf) {
     return Parser.builder(OneCGrammar.create().build())
-      .withLexer(OneCLexer.create()).build();
+      .withLexer(OneCLexer.create(conf)).build();
   }
 
 }

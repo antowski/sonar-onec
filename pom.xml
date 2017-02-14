@@ -2,28 +2,51 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   
+  <!--
+  <parent>
+    <groupId>org.sonarsource.parent</groupId>
+    <artifactId>parent</artifactId>
+    <version>38</version>
+  </parent>
+  -->
+
   <groupId>org.antowski.onec</groupId>
   <artifactId>onec</artifactId>
   <version>0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   
   <name>Onec</name>
-  
+  <organization>
+    <name>antowski</name>
+  </organization>
+  <licenses>
+    <license>
+      <name>GNU LGPL 3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
   <modules>
     <module>onec-checks</module>
-    <module>onec-squid</module>
+    <module>onec-squid</module>    
     <module>sonar-onec-plugin</module>    
   </modules>
 
   <properties>
     
+    <license.title>SonarQube 1C:Enterprise 7.7 Plugin</license.title>
+
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     
-  <sonar.pluginClass>org.antowski.plugins.onec.OneCPlugin</sonar.pluginClass>
+    <sonar.pluginClass>org.antowski.plugins.onec.OneCPlugin</sonar.pluginClass>
     <sonar.pluginName>1C:Enterprise 7.7</sonar.pluginName>
 
     <!-- versions -->
     
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+
     <sonar.apiVersion>6.2</sonar.apiVersion>
     <jdk.min.version>1.8</jdk.min.version>
 
@@ -32,6 +55,8 @@
     <commons.lang.version>2.6</commons.lang.version>
     <junit.version>4.12</junit.version>
     <maven.project.version>2.2.1</maven.project.version>
+    <mockito.version>1.10.19</mockito.version>
+    <slf4j.version>1.7.21</slf4j.version>
     <sonar.version>5.6</sonar.version>
     <sonar.orchestrator.version>3.13</sonar.orchestrator.version>
     <sonarlint-core.version>2.4.1</sonarlint-core.version>
@@ -104,6 +129,20 @@
         <version>${commons.io.version}</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+       <groupId>org.slf4j</groupId>
+       <artifactId>slf4j-log4j12</artifactId>
+       <version>${slf4j.version}</version>
+       <scope>provided</scope>
+    </dependency>
+
     <!-- test dependencies -->
     <dependency>
       <groupId>org.sonarsource.sonarqube</groupId>
@@ -121,6 +160,12 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>${mockito.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>

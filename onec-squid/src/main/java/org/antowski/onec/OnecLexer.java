@@ -1,5 +1,5 @@
 /*
- * 1C:Enterprise 7.7 language plugin for SonarQube
+ * SonarQube 1C:Enterprise 7.7 Plugin
  * Copyright (C) 2017 antowski
  * mailto:antowski AT gmail DOT com
  *
@@ -17,7 +17,6 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
 package org.antowski.onec;
 
 import com.sonar.sslr.impl.Lexer;
@@ -31,19 +30,16 @@ import com.sonar.sslr.impl.channel.UnknownCharacterChannel;
 import static com.sonar.sslr.impl.channel.RegexpChannelBuilder.commentRegexp;
 //import static com.sonar.sslr.impl.channel.RegexpChannelBuilder.regexp;
 
-import com.google.common.base.Charsets;
-
 public final class OneCLexer {
 
   private OneCLexer() {
   }
 
   //public static Lexer create(PythonConfiguration conf) {
-  public static Lexer create() {
+  public static Lexer create(OneCConfiguration conf) {
     
     return Lexer.builder()
-        //.withCharset(conf.getCharset())
-        .withCharset(Charsets.UTF_8)
+        .withCharset(conf.getCharset())
         .withFailIfNoChannelToConsumeOneCharacter(true)
 
         .withChannel(new BlackHoleChannel("\\s"))

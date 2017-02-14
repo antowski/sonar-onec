@@ -30,9 +30,14 @@
     </dependency>
 
     <dependency>
-        <groupId>${project.groupId}</groupId>
-        <artifactId>onec-checks</artifactId>
-        <version>${project.version}</version>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>onec-squid</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>onec-checks</artifactId>
+      <version>${project.version}</version>
     </dependency>
 
     <dependency>
@@ -48,6 +53,21 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+
+    <dependency>
+       <groupId>org.slf4j</groupId>
+       <artifactId>slf4j-log4j12</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>      
     </dependency>
 
     <!-- 
@@ -83,8 +103,47 @@
           <target>${jdk.min.version}</target>
         </configuration>
       </plugin>
+
       <plugin>
-        <!-- UTF-8 bundles are not supported by Java, so they must be converted during build -->
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>jarjar-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>jarjar</goal>
+            </goals>
+            <configuration>
+              <includes>
+                <include>${project.groupId}:onec-squid</include>
+                <include>org.codehaus.sonar.sslr:sslr-core</include>
+                <include>org.codehaus.sonar.sslr:sslr-xpath</include>
+                <include>org.codehaus.sonar.sslr-squid-bridge:sslr-squid-bridge</include>
+                <include>jaxen:jaxen</include>
+                <include>org.codehaus.sonar.sslr:sslr-toolkit</include>
+                <include>org.codehaus.sonar:sonar-colorizer</include>
+                <include>org.codehaus.sonar:sonar-channel</include>
+                <include>org.slf4j:slf4j-api</include>
+                <include>org.slf4j:jcl-over-slf4j</include>
+                <include>ch.qos.logback:logback-classic</include>
+                <include>ch.qos.logback:logback-core</include>
+                <include>commons-io:commons-io</include>
+                <include>commons-lang:commons-lang</include>
+                <include>com.google.guava:guava</include>
+              </includes>
+              <rules>
+                <keep>
+                  <pattern>*.**</pattern>
+                </keep>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- UTF-8 bundles are not supported by Java, so they must be converted during build -->
+      <!--
+      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>native2ascii-maven-plugin</artifactId>
         <version>1.0-beta-1</version>
@@ -96,6 +155,7 @@
           </execution>
         </executions>
       </plugin>
+      -->
 
     </plugins>
   </build>
