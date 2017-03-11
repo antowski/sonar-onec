@@ -45,7 +45,7 @@ import static org.mockito.Mockito.when;
 
 public class OneCSquidSensorTest {
 
-    private final File baseDir = new File("src/test/resources/org/antowski/plugins/onec/squid-sensor");
+    private final File baseDir = new File("src/test/resources");
     private SensorContextTester context = SensorContextTester.create(baseDir);
     private ActiveRules activeRules;
 
