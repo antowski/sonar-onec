@@ -16,8 +16,11 @@
     <packaging>pom</packaging>
 
     <name>Onec</name>
+    <description>Enables analysis source files on 1C:Enterprise 7.7 embedded programming language</description>
+    <inceptionYear>2017</inceptionYear>
     <organization>
-        <name>antowski</name>
+        <name>Andrei Dzehalevich</name>
+        <url>mailto:antowski@gmail.com</url>
     </organization>
     <licenses>
         <license>
@@ -27,20 +30,33 @@
         </license>
     </licenses>
 
+    <developers>
+        <developer>
+            <id>antowski</id>
+            <name>Andrei Dzehalevich</name>
+            <email>antowski@gmail.com</email>
+        </developer>
+    </developers>
+
     <modules>
         <module>onec-checks</module>
-        <module>onec-squid</module>
+        <module>onec-frontend</module>
         <module>sonar-onec-plugin</module>
     </modules>
 
     <properties>
 
+        <!-- license -->
+        <license.licenseName>lgpl_v3</license.licenseName>
         <license.title>SonarQube 1C:Enterprise 7.7 Plugin</license.title>
+        <license.owner>Andrei Dzehalevich</license.owner>
+        <license.mailto>antowski@gmail.com</license.mailto>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <sonar.pluginClass>org.antowski.plugins.onec.OneCPlugin</sonar.pluginClass>
         <sonar.pluginName>1C:Enterprise 7.7</sonar.pluginName>
+        <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
 
         <!-- versions -->
 
@@ -57,7 +73,7 @@
         <maven.project.version>2.2.1</maven.project.version>
         <mockito.version>1.10.19</mockito.version>
         <slf4j.version>1.7.21</slf4j.version>
-        <sonar.version>5.6</sonar.version>
+        <sonar.version>6.2</sonar.version>
         <sonar.orchestrator.version>3.13</sonar.orchestrator.version>
         <sonarlint-core.version>2.4.1</sonarlint-core.version>
         <sslr.version>1.21</sslr.version>
