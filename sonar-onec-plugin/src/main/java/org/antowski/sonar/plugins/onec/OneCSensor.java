@@ -81,6 +81,7 @@ public class OneCSensor implements Sensor {
     public void execute(SensorContext context) {
         this.fileSystem = context.fileSystem();
 
+        /*
         List<TreeVisitor> treeVisitors = Lists.newArrayList();
 
         FilePredicate mainFilePredicate = this.fileSystem.predicates().and(
@@ -101,7 +102,7 @@ public class OneCSensor implements Sensor {
         treeVisitors.add(new SeChecksDispatcher(checks.seChecks()));
         treeVisitors.add(new CpdVisitor(fileSystem, context));
         treeVisitors.addAll(checks.visitorChecks());
-
+*/
         /*
         ImmutableList<OneCCheck> visitors = getVisitors(new CpdVisitor(context));
 

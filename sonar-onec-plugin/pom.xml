@@ -31,7 +31,7 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>onec-squid</artifactId>
+            <artifactId>onec-frontend</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
