@@ -50,6 +50,8 @@
         <license.licenseName>lgpl_v3</license.licenseName>
         <license.projectName>SonarQube 1C:Enterprise 7.7 Plugin</license.projectName>
         <license.addJavaLicenseAfterPackage>false</license.addJavaLicenseAfterPackage>
+        <license.emptyLineAfterHeader>true</license.emptyLineAfterHeader>
+        <license.useJavaNoReformatCommentStartTag>false</license.useJavaNoReformatCommentStartTag>
         <license.title>SonarQube 1C:Enterprise 7.7 Plugin</license.title>
         <license.owner>Andrei Dzehalevich</license.owner>
         <license.mailto>antowski@gmail.com</license.mailto>

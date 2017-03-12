@@ -1,4 +1,3 @@
-
 package org.antowski.sonar.plugins.onec;
 
 import com.google.common.collect.Lists;

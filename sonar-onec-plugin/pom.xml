@@ -99,6 +99,32 @@
 
             <!--
             <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <configuration>
+                    <header>com/mycila/maven/plugin/license/templates/LGPL-3.txt</header>
+                    <properties>
+                        <owner>Andrei Dzehalevich</owner>
+                        <email>antowski@gmail.com</email>
+                    </properties>
+                    <excludes>
+                        <exclude>**/README</exclude>
+                        <exclude>src/test/resources/**</exclude>
+                        <exclude>src/main/resources/**</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            -->
+
+            <!--
+            <plugin>
               <groupId>org.sonatype.plugins</groupId>
               <artifactId>jarjar-maven-plugin</artifactId>
               <executions>

@@ -1,4 +1,3 @@
-
 package org.antowski.sonar.plugins.onec;
 
 import org.antowski.onec.checks.CheckList;
