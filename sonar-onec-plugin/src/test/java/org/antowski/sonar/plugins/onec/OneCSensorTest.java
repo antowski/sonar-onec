@@ -32,7 +32,6 @@ public class OneCSensorTest {
 
     private final File baseDir = new File("src/test/resources");
     private final SensorContextTester context = SensorContextTester.create(OneCTestUtils.getModuleBaseDir());
-    //private final SensorContextTester context = SensorContextTester.create(new File("src/test/resources"));
 
     private CheckFactory checkFactory = new CheckFactory(mock(ActiveRules.class));
 
@@ -44,7 +43,7 @@ public class OneCSensorTest {
     }
 
     private OneCSensor createSensor() {
-        return new OneCSensor(createFileLinesContextFactory(), checkFactory);
+        return new OneCSensor(context.fileSystem(), createFileLinesContextFactory(), checkFactory);
     }
 
     @Test

@@ -1,17 +1,17 @@
 package org.antowski.sonar.plugins.onec;
 
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.Lists;
 import com.google.common.collect.ImmutableList;
 import org.antowski.onec.checks.CheckList;
 import org.antowski.onec.FileLinesVisitor;
 import org.antowski.onec.OneCAstScanner;
 import org.antowski.onec.OneCConfiguration;
 import org.antowski.onec.OneCMetric;
-
-import com.google.common.collect.Lists;
+import org.antowski.plugins.onec.api.visitors.TreeVisitor;
 
 import com.sonar.sslr.api.Grammar;
 
-import java.io.File;
 import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -28,9 +28,6 @@ import org.sonar.api.batch.sensor.issue.NewIssueLocation;
 
 import org.sonar.api.utils.log.Loggers;
 import org.sonar.api.utils.log.Logger;
-
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
 
 import org.sonar.api.batch.fs.FilePredicates;
 import org.sonar.api.batch.fs.InputFile;
@@ -51,20 +48,26 @@ import org.sonar.squidbridge.ProgressReport;
 
 public class OneCSensor implements Sensor {
 
-    private final Checks<SquidAstVisitor<Grammar>> checks;
-    private final FileLinesContextFactory fileLinesContextFactory;
+    //private final Checks<SquidAstVisitor<Grammar>> checks;
+
 
     private SensorContext context;
     private AstScanner<Grammar> scanner;
 
-    private FileSystem fileSystem;
+    private final FileSystem fileSystem;
+    private final FilePredicate mainFilePredicate;
+    private final FileLinesContextFactory fileLinesContextFactory;
 
     private static final Logger LOG = Loggers.get(OneCSensor.class);
 
-    public OneCSensor(FileLinesContextFactory fileLinesContextFactory, CheckFactory checkFactory) {
-        this.checks = checkFactory
-            .<SquidAstVisitor<Grammar>>create(CheckList.REPOSITORY_KEY)
-            .addAnnotatedChecks(CheckList.getChecks());
+    public OneCSensor(FileSystem fileSystem, FileLinesContextFactory fileLinesContextFactory, CheckFactory checkFactory) {
+//        this.checks = checkFactory
+//            .<SquidAstVisitor<Grammar>>create(CheckList.REPOSITORY_KEY)
+//            .addAnnotatedChecks(CheckList.getChecks());
+        this.fileSystem = fileSystem;
+        this.mainFilePredicate = fileSystem.predicates().and(
+                fileSystem.predicates().hasType(InputFile.Type.MAIN),
+                fileSystem.predicates().hasLanguage(OneC.KEY));
         this.fileLinesContextFactory = fileLinesContextFactory;        
     }
 
@@ -73,49 +76,42 @@ public class OneCSensor implements Sensor {
         descriptor
                 .onlyOnLanguage(OneC.KEY)
                 .name("OneC sensor")
-                .onlyOnFileType(InputFile.Type.MAIN);;
+                .onlyOnFileType(InputFile.Type.MAIN);
     }
 
     @Override
     public void execute(SensorContext context) {
-        this.fileSystem = context.fileSystem();
 
-        /*
         List<TreeVisitor> treeVisitors = Lists.newArrayList();
 
-        FilePredicate mainFilePredicate = this.fileSystem.predicates().and(
-                this.fileSystem.predicates().hasType(InputFile.Type.MAIN),
-                this.fileSystem.predicates().hasLanguage(OneC.KEY));
-
-        visitors = ImmutableList.<OneCCheck>builder().addAll(checks.all());
-
-        MetricsVisitor metricsVisitor = new MetricsVisitor(
-                context,
-                noSonarFilter,
-                context.settings().getBoolean(JavaScriptPlugin.IGNORE_HEADER_COMMENTS),
-                fileLinesContextFactory,
-                isAtLeastSq62);
-
-        treeVisitors.add(metricsVisitor);
-        treeVisitors.add(new HighlighterVisitor(context, fileSystem));
-        treeVisitors.add(new SeChecksDispatcher(checks.seChecks()));
-        treeVisitors.add(new CpdVisitor(fileSystem, context));
-        treeVisitors.addAll(checks.visitorChecks());
-*/
-        /*
-        ImmutableList<OneCCheck> visitors = getVisitors(new CpdVisitor(context));
-
-        PHPAnalyzer phpAnalyzer = new PHPAnalyzer(fileSystem.encoding(), visitors);
-        ArrayList<InputFile> inputFiles = Lists.newArrayList(fileSystem.inputFiles(mainFilePredicate));
-
-        ProgressReport progressReport = new ProgressReport("Report about progress of PHP analyzer", TimeUnit.SECONDS.toMillis(10));
+        ProgressReport progressReport = new ProgressReport("Report about progress of 1C:Enterprise 7.7 analyzer", TimeUnit.SECONDS.toMillis(10));
         progressReport.start(Lists.newArrayList(fileSystem.files(mainFilePredicate)));
 
-        Map<File, Integer> numberOLinesOfCode = new HashMap<>();
+        analyseFiles(context, treeVisitors, fileSystem.inputFiles(mainFilePredicate), progressReport);
 
-        analyseFiles(context, phpAnalyzer, inputFiles, progressReport, numberOLinesOfCode);
-*/
-        //processCoverage(context, numberOLinesOfCode);
+        //MetricsVisitor metricsVisitor = new MetricsVisitor(context,fileLinesContextFactory);
+        //treeVisitors.add(metricsVisitor);
+
+    }
+
+    @VisibleForTesting
+    protected void analyseFiles(SensorContext context, List<TreeVisitor> treeVisitors, Iterable<InputFile> inputFiles, ProgressReport progressReport) {
+        boolean success = false;
+        try {
+            for (InputFile inputFile : inputFiles) {
+                if (context.isCancelled()) {
+                    throw new CancellationException("Analysis interrupted because the SensorContext is in cancelled state");
+                }
+                analyseFile(context, inputFile, treeVisitors);
+                progressReport.nextFile();
+            }
+            success = true;
+        } catch (CancellationException e) {
+            // do not propagate the exception
+            LOG.debug(e.toString());
+        } finally {
+            stopProgressReport(progressReport, success);
+        }
     }
 
     //@Override
@@ -137,7 +133,7 @@ public class OneCSensor implements Sensor {
         analyseFiles(context, inputFiles, progressReport);
 
         */
-
+/*
         this.context = context;
         Map<InputFile, Set<Integer>> linesOfCode = new HashMap<>();
 
@@ -151,6 +147,8 @@ public class OneCSensor implements Sensor {
 
         Collection<SourceCode> squidSourceFiles = scanner.getIndex().search(new QueryByType(SourceFile.class));
         save(squidSourceFiles);
+*/
+
         /*savePreciseIssues(
             visitors
                 .stream()
@@ -161,76 +159,57 @@ public class OneCSensor implements Sensor {
 
     }
 
-    private void save(Collection<SourceCode> squidSourceFiles) {
-        for (SourceCode squidSourceFile : squidSourceFiles) {
-            SourceFile squidFile = (SourceFile) squidSourceFile;
+//    private void save(Collection<SourceCode> squidSourceFiles) {
+//        for (SourceCode squidSourceFile : squidSourceFiles) {
+//            SourceFile squidFile = (SourceFile) squidSourceFile;
+//
+//            InputFile inputFile = context.fileSystem().inputFile(context.fileSystem().predicates().is(new java.io.File(squidFile.getKey())));
+//
+//            //noSonarFilter.noSonarInFile(inputFile, squidFile.getNoSonarTagLines());
+//
+//            //saveFilesComplexityDistribution(inputFile, squidFile);
+//            //saveFunctionsComplexityDistribution(inputFile, squidFile);
+//            saveMeasures(inputFile, squidFile);
+//            saveIssues(inputFile, squidFile);
+//        }
+//    }
+//
+//    private void saveMeasures(InputFile inputFile, SourceFile squidFile) {
+//        saveMetricOnFile(inputFile, CoreMetrics.NCLOC, squidFile.getInt(OneCMetric.LINES_OF_CODE));
+//        /*saveMetricOnFile(inputFile, CoreMetrics.STATEMENTS, squidFile.getInt(OnecMetric.STATEMENTS));
+//        saveMetricOnFile(inputFile, CoreMetrics.FUNCTIONS, squidFile.getInt(OnecMetric.FUNCTIONS));
+//        saveMetricOnFile(inputFile, CoreMetrics.CLASSES, squidFile.getInt(OnecMetric.CLASSES));
+//        saveMetricOnFile(inputFile, CoreMetrics.COMPLEXITY, squidFile.getInt(OnecMetric.COMPLEXITY));
+//        */
+//        saveMetricOnFile(inputFile, CoreMetrics.COMMENT_LINES, squidFile.getInt(OneCMetric.COMMENT_LINES));
+//    }
+//
+//    private <T extends Serializable> void saveMetricOnFile(InputFile inputFile, Metric metric, T value) {
+//        context.<T>newMeasure()
+//        .withValue(value)
+//        .forMetric(metric)
+//        .on(inputFile)
+//        .save();
+//    }
+//    private void saveIssues(InputFile inputFile, SourceFile squidFile) {
+//        Collection<CheckMessage> messages = squidFile.getCheckMessages();
+//        for (CheckMessage message : messages) {
+//            RuleKey ruleKey = checks.ruleKey((SquidAstVisitor<Grammar>) message.getCheck());
+//            NewIssue newIssue = context.newIssue();
+//
+//            NewIssueLocation primaryLocation = newIssue.newLocation()
+//            .message(message.getText(Locale.ENGLISH))
+//            .on(inputFile);
+//
+//            if (message.getLine() != null) {
+//            primaryLocation.at(inputFile.selectLine(message.getLine()));
+//            }
+//
+//            newIssue.forRule(ruleKey).at(primaryLocation).save();
+//        }
+//    }
 
-            InputFile inputFile = context.fileSystem().inputFile(context.fileSystem().predicates().is(new java.io.File(squidFile.getKey())));
-
-            //noSonarFilter.noSonarInFile(inputFile, squidFile.getNoSonarTagLines());
-
-            //saveFilesComplexityDistribution(inputFile, squidFile);
-            //saveFunctionsComplexityDistribution(inputFile, squidFile);
-            saveMeasures(inputFile, squidFile);
-            saveIssues(inputFile, squidFile);
-        }
-    }
-
-    private void saveMeasures(InputFile inputFile, SourceFile squidFile) {
-        saveMetricOnFile(inputFile, CoreMetrics.NCLOC, squidFile.getInt(OneCMetric.LINES_OF_CODE));
-        /*saveMetricOnFile(inputFile, CoreMetrics.STATEMENTS, squidFile.getInt(OnecMetric.STATEMENTS));
-        saveMetricOnFile(inputFile, CoreMetrics.FUNCTIONS, squidFile.getInt(OnecMetric.FUNCTIONS));
-        saveMetricOnFile(inputFile, CoreMetrics.CLASSES, squidFile.getInt(OnecMetric.CLASSES));
-        saveMetricOnFile(inputFile, CoreMetrics.COMPLEXITY, squidFile.getInt(OnecMetric.COMPLEXITY));
-        */
-        saveMetricOnFile(inputFile, CoreMetrics.COMMENT_LINES, squidFile.getInt(OneCMetric.COMMENT_LINES));
-    }
-
-    private <T extends Serializable> void saveMetricOnFile(InputFile inputFile, Metric metric, T value) {
-        context.<T>newMeasure()
-        .withValue(value)
-        .forMetric(metric)
-        .on(inputFile)
-        .save();
-    }
-    private void saveIssues(InputFile inputFile, SourceFile squidFile) {
-        Collection<CheckMessage> messages = squidFile.getCheckMessages();
-        for (CheckMessage message : messages) {
-            RuleKey ruleKey = checks.ruleKey((SquidAstVisitor<Grammar>) message.getCheck());
-            NewIssue newIssue = context.newIssue();
-
-            NewIssueLocation primaryLocation = newIssue.newLocation()
-            .message(message.getText(Locale.ENGLISH))
-            .on(inputFile);
-
-            if (message.getLine() != null) {
-            primaryLocation.at(inputFile.selectLine(message.getLine()));
-            }
-
-            newIssue.forRule(ruleKey).at(primaryLocation).save();
-        }
-    }
-
-    void analyseFiles(SensorContext context, List<InputFile> inputFiles, ProgressReport progressReport){
-        
-        boolean success = false;
-        
-        try {
-        
-            for (InputFile inputFile : inputFiles) {
-                progressReport.nextFile();
-                analyseFile(context, inputFile);
-            }
-
-            success = true;
-            
-        } finally {
-            stopProgressReport(progressReport, success);
-        }
-       
-    }
-
-    private void analyseFile(SensorContext context, InputFile inputFile) {
+    private void analyseFile(SensorContext context, InputFile inputFile, List<TreeVisitor> treeVisitors) {
         LOG.info("analyse file '" + inputFile.absolutePath() + "'\n"
             + "\t language: " + inputFile.language() + "\n"
             + "\t charset: " + inputFile.charset());
