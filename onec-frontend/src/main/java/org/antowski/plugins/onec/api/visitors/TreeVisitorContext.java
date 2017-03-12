@@ -1,20 +1,19 @@
 package org.antowski.plugins.onec.api.visitors;
 
-import com.google.common.annotations.Beta;
-
 import java.io.File;
 
-@Beta
+import org.antowski.plugins.onec.api.tree.CompilationUnitTree;
+
 public interface TreeVisitorContext {
 
-  /**
-   * @return the top tree node of the current file AST representation.
-   */
-  //CompilationUnitTree getTopTree();
+    /**
+     * @return the top tree node of the current file AST representation.
+     */
+    CompilationUnitTree getTopTree();
 
-  /**
-   * @return the current file
-   */
-  File getFile();
+    /**
+     * @return the current file
+     */
+    File getFile();
 
 }
