@@ -2,26 +2,20 @@
 package org.antowski.onec;
 
 import com.google.common.base.Charsets;
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.AstNodeType;
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.impl.Parser;
 import java.io.File;
 import java.util.Collection;
+
+import org.antowski.onec.parser.OneCParser;
 import org.sonar.squidbridge.AstScanner;
 import org.sonar.squidbridge.CommentAnalyser;
-import org.sonar.squidbridge.SourceCodeBuilderCallback;
-import org.sonar.squidbridge.SourceCodeBuilderVisitor;
 import org.sonar.squidbridge.SquidAstVisitor;
 import org.sonar.squidbridge.SquidAstVisitorContextImpl;
-import org.sonar.squidbridge.api.SourceClass;
 import org.sonar.squidbridge.api.SourceCode;
 import org.sonar.squidbridge.api.SourceFile;
-import org.sonar.squidbridge.api.SourceFunction;
 import org.sonar.squidbridge.api.SourceProject;
 import org.sonar.squidbridge.indexer.QueryByType;
-import org.sonar.squidbridge.metrics.ComplexityVisitor;
-import org.sonar.squidbridge.metrics.CounterVisitor;
 
 public final class OneCAstScanner {
 

@@ -51,7 +51,7 @@ public class OneCSensorTest {
         DefaultSensorDescriptor descriptor = new DefaultSensorDescriptor();
         createSensor().describe(descriptor);
 
-        assertThat(descriptor.name()).isEqualTo("OneC sensor");
+        assertThat(descriptor.name()).isEqualTo("1C 7.7 sensor");
         assertThat(descriptor.languages()).containsOnly("1c 7.7");
         assertThat(descriptor.type()).isEqualTo(Type.MAIN);
     }

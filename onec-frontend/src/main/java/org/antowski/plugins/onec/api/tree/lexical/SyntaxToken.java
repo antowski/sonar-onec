@@ -18,8 +18,4 @@ public interface SyntaxToken extends Tree {
     int line();
 
     int column();
-
-    int endLine();
-
-    int endColumn();
 }

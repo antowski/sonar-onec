@@ -1,17 +1,24 @@
 package org.antowski.sonar.plugins.onec;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.ImmutableList;
+import com.sonar.sslr.api.RecognitionException;
+import com.sonar.sslr.api.typed.ActionParser;
 import org.antowski.onec.checks.CheckList;
 import org.antowski.onec.FileLinesVisitor;
 import org.antowski.onec.OneCAstScanner;
 import org.antowski.onec.OneCConfiguration;
 import org.antowski.onec.OneCMetric;
+import org.antowski.onec.parser.OneCParser;
+import org.antowski.plugins.onec.api.tree.Tree;
 import org.antowski.plugins.onec.api.visitors.TreeVisitor;
 
 import com.sonar.sslr.api.Grammar;
 
+import java.io.File;
+import java.io.InterruptedIOException;
 import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -39,6 +46,7 @@ import org.sonar.api.rule.RuleKey;
 
 import org.sonar.squidbridge.AstScanner;
 import org.sonar.squidbridge.SquidAstVisitor;
+import org.sonar.squidbridge.api.AnalysisException;
 import org.sonar.squidbridge.api.CheckMessage;
 import org.sonar.squidbridge.api.SourceCode;
 import org.sonar.squidbridge.api.SourceFile;
@@ -57,6 +65,8 @@ public class OneCSensor implements Sensor {
     private final FilePredicate mainFilePredicate;
     private final FileLinesContextFactory fileLinesContextFactory;
 
+    private RuleKey parsingErrorRuleKey = null;
+
     private static final Logger LOG = Loggers.get(OneCSensor.class);
 
     public OneCSensor(FileSystem fileSystem, FileLinesContextFactory fileLinesContextFactory, CheckFactory checkFactory) {
@@ -74,7 +84,7 @@ public class OneCSensor implements Sensor {
     public void describe(SensorDescriptor descriptor) {
         descriptor
                 .onlyOnLanguage(OneC.KEY)
-                .name("OneC sensor")
+                .name("1C 7.7 sensor")
                 .onlyOnFileType(InputFile.Type.MAIN);
     }
 
@@ -83,8 +93,10 @@ public class OneCSensor implements Sensor {
 
         List<TreeVisitor> treeVisitors = Lists.newArrayList();
 
-        ProgressReport progressReport = new ProgressReport("Report about progress of 1C:Enterprise 7.7 analyzer",
-                        TimeUnit.SECONDS.toMillis(10));
+        ProgressReport progressReport = new ProgressReport(
+                "Report about progress of 1C:Enterprise 7.7 analyzer",
+                TimeUnit.SECONDS.toMillis(10));
+
         progressReport.start(Lists.newArrayList(fileSystem.files(mainFilePredicate)));
 
         analyseFiles(context, treeVisitors, fileSystem.inputFiles(mainFilePredicate), progressReport);
@@ -118,105 +130,36 @@ public class OneCSensor implements Sensor {
         }
     }
 
-    //@Override
-    public void execute_old(SensorContext context) {
+    private void analyseFile(SensorContext sensorContext, InputFile inputFile, List<TreeVisitor> treeVisitors) {
 
-        /*
-        LOG.info(" ------- OneCSensor works!");
+        try {
+            ActionParser<Tree> parser = OneCParser.createParser(createConfiguration().getCharset());
+            Tree ast = parser.parse(new File(inputFile.absolutePath()));
+            scanFile(inputFile, ast, treeVisitors);
 
-        FileSystem fileSystem = context.fileSystem();
+        } catch (RecognitionException e) {
+            checkInterrupted(e);
+            LOG.error("Unable to parse file: " + inputFile.absolutePath());
+            LOG.error(e.getMessage());
+            processRecognitionException(e, sensorContext, inputFile);
 
-        FilePredicate OneCFilePredicate = fileSystem.predicates().and(
-            fileSystem.predicates().hasLanguage(OneC.KEY));
-        
-        ArrayList<InputFile> inputFiles = Lists.newArrayList(fileSystem.inputFiles(OneCFilePredicate));
-
-        ProgressReport progressReport = new ProgressReport("Report about progress of 1C:7.7 analyzer", TimeUnit.SECONDS.toMillis(10));
-        progressReport.start(Lists.newArrayList(fileSystem.files(OneCFilePredicate)));
-
-        analyseFiles(context, inputFiles, progressReport);
-
-        */
-/*
-        this.context = context;
-        Map<InputFile, Set<Integer>> linesOfCode = new HashMap<>();
-
-        OneCConfiguration conf = createConfiguration();
-
-        List<SquidAstVisitor<Grammar>> visitors = Lists.newArrayList(checks.all());
-        visitors.add(new FileLinesVisitor(fileLinesContextFactory, context.fileSystem(), linesOfCode));
-        scanner = OneCAstScanner.create(conf, visitors.toArray(new SquidAstVisitor[visitors.size()]));
-        FilePredicates p = context.fileSystem().predicates();
-        scanner.scanFiles(Lists.newArrayList(context.fileSystem().files(p.and(p.hasType(InputFile.Type.MAIN), p.hasLanguage(OneC.KEY)))));
-
-        Collection<SourceCode> squidSourceFiles = scanner.getIndex().search(new QueryByType(SourceFile.class));
-        save(squidSourceFiles);
-*/
-
-        /*savePreciseIssues(
-            visitors
-                .stream()
-                .filter(v -> v instanceof OneCCheck)
-                .map(v -> (OneCCheck) v)
-                .collect(Collectors.toList()));
-*/
+        } catch (Exception e) {
+            checkInterrupted(e);
+            throw new AnalysisException("Unable to analyse file: " + inputFile.absolutePath(), e);
+        }
 
     }
 
-//    private void save(Collection<SourceCode> squidSourceFiles) {
-//        for (SourceCode squidSourceFile : squidSourceFiles) {
-//            SourceFile squidFile = (SourceFile) squidSourceFile;
-//
-//            InputFile inputFile = context.fileSystem().inputFile(context.fileSystem().predicates().is(new java.io.File(squidFile.getKey())));
-//
-//            //noSonarFilter.noSonarInFile(inputFile, squidFile.getNoSonarTagLines());
-//
-//            //saveFilesComplexityDistribution(inputFile, squidFile);
-//            //saveFunctionsComplexityDistribution(inputFile, squidFile);
-//            saveMeasures(inputFile, squidFile);
-//            saveIssues(inputFile, squidFile);
-//        }
-//    }
-//
-//    private void saveMeasures(InputFile inputFile, SourceFile squidFile) {
-//        saveMetricOnFile(inputFile, CoreMetrics.NCLOC, squidFile.getInt(OneCMetric.LINES_OF_CODE));
-//        /*saveMetricOnFile(inputFile, CoreMetrics.STATEMENTS, squidFile.getInt(OnecMetric.STATEMENTS));
-//        saveMetricOnFile(inputFile, CoreMetrics.FUNCTIONS, squidFile.getInt(OnecMetric.FUNCTIONS));
-//        saveMetricOnFile(inputFile, CoreMetrics.CLASSES, squidFile.getInt(OnecMetric.CLASSES));
-//        saveMetricOnFile(inputFile, CoreMetrics.COMPLEXITY, squidFile.getInt(OnecMetric.COMPLEXITY));
-//        */
-//        saveMetricOnFile(inputFile, CoreMetrics.COMMENT_LINES, squidFile.getInt(OneCMetric.COMMENT_LINES));
-//    }
-//
-//    private <T extends Serializable> void saveMetricOnFile(InputFile inputFile, Metric metric, T value) {
-//        context.<T>newMeasure()
-//        .withValue(value)
-//        .forMetric(metric)
-//        .on(inputFile)
-//        .save();
-//    }
-//    private void saveIssues(InputFile inputFile, SourceFile squidFile) {
-//        Collection<CheckMessage> messages = squidFile.getCheckMessages();
-//        for (CheckMessage message : messages) {
-//            RuleKey ruleKey = checks.ruleKey((SquidAstVisitor<Grammar>) message.getCheck());
-//            NewIssue newIssue = context.newIssue();
-//
-//            NewIssueLocation primaryLocation = newIssue.newLocation()
-//            .message(message.getText(Locale.ENGLISH))
-//            .on(inputFile);
-//
-//            if (message.getLine() != null) {
-//            primaryLocation.at(inputFile.selectLine(message.getLine()));
-//            }
-//
-//            newIssue.forRule(ruleKey).at(primaryLocation).save();
-//        }
-//    }
+    private void scanFile(InputFile inputFile, Tree ast, List<TreeVisitor> visitors){
 
-    private void analyseFile(SensorContext context, InputFile inputFile, List<TreeVisitor> treeVisitors) {
         LOG.info("analyse file '" + inputFile.absolutePath() + "'\n"
-            + "\t language: " + inputFile.language() + "\n"
-            + "\t charset: " + inputFile.charset());
+                + "\t language: " + inputFile.language() + "\n"
+                + "\t charset: " + inputFile.charset());
+
+        for (TreeVisitor visitor : visitors) {
+            //visitor.scanTree(context);
+        }
+
     }
 
     private static void stopProgressReport(ProgressReport progressReport, boolean success) {
@@ -224,6 +167,29 @@ public class OneCSensor implements Sensor {
             progressReport.stop();
         } else {
             progressReport.cancel();
+        }
+    }
+
+    private static void checkInterrupted(Exception e) {
+        Throwable cause = Throwables.getRootCause(e);
+        if (cause instanceof InterruptedException || cause instanceof InterruptedIOException) {
+            throw new AnalysisException("Analysis cancelled", e);
+        }
+    }
+
+    private void processRecognitionException(RecognitionException e, SensorContext sensorContext, InputFile inputFile) {
+        if (parsingErrorRuleKey != null) {
+            NewIssue newIssue = sensorContext.newIssue();
+
+            NewIssueLocation primaryLocation = newIssue.newLocation()
+                    .message(e.getMessage())
+                    .on(inputFile)
+                    .at(inputFile.selectLine(e.getLine()));
+
+            newIssue
+                    .forRule(parsingErrorRuleKey)
+                    .at(primaryLocation)
+                    .save();
         }
     }
 

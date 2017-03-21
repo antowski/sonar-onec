@@ -11,10 +11,21 @@ import java.util.stream.StreamSupport;
 import org.antowski.plugins.onec.api.tree.Kinds;
 import org.antowski.plugins.onec.api.tree.Tree;
 import org.antowski.plugins.onec.api.tree.lexical.SyntaxToken;
+import org.sonar.sslr.grammar.GrammarRuleKey;
+
+import javax.annotation.Nullable;
 
 public abstract class OneCTree implements Tree {
 
-    private OneCTree parent;
+    @Nullable
+    private Tree parent;
+
+    protected GrammarRuleKey grammarRuleKey;
+
+
+    public OneCTree(GrammarRuleKey grammarRuleKey) {
+        this.grammarRuleKey = grammarRuleKey;
+    }
 
     public int getLine() {
         return getFirstToken().line();
@@ -109,7 +120,7 @@ public abstract class OneCTree implements Tree {
         this.parent = (OneCTree) parent;
     }
 
-    public OneCTree getParent() {
+    public Tree getParent() {
         return parent;
     }
 

@@ -4,6 +4,7 @@ import com.google.common.base.Charsets;
 
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.impl.Parser;
+import org.antowski.onec.parser.OneCParser;
 import org.sonar.sslr.grammar.GrammarRuleKey;
 
 public abstract class RuleTest {
