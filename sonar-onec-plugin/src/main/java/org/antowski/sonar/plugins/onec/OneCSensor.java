@@ -50,7 +50,6 @@ public class OneCSensor implements Sensor {
 
     //private final Checks<SquidAstVisitor<Grammar>> checks;
 
-
     private SensorContext context;
     private AstScanner<Grammar> scanner;
 
@@ -84,7 +83,8 @@ public class OneCSensor implements Sensor {
 
         List<TreeVisitor> treeVisitors = Lists.newArrayList();
 
-        ProgressReport progressReport = new ProgressReport("Report about progress of 1C:Enterprise 7.7 analyzer", TimeUnit.SECONDS.toMillis(10));
+        ProgressReport progressReport = new ProgressReport("Report about progress of 1C:Enterprise 7.7 analyzer",
+                        TimeUnit.SECONDS.toMillis(10));
         progressReport.start(Lists.newArrayList(fileSystem.files(mainFilePredicate)));
 
         analyseFiles(context, treeVisitors, fileSystem.inputFiles(mainFilePredicate), progressReport);
@@ -95,7 +95,11 @@ public class OneCSensor implements Sensor {
     }
 
     @VisibleForTesting
-    protected void analyseFiles(SensorContext context, List<TreeVisitor> treeVisitors, Iterable<InputFile> inputFiles, ProgressReport progressReport) {
+    protected void analyseFiles(
+            SensorContext context,
+            List<TreeVisitor> treeVisitors,
+            Iterable<InputFile> inputFiles,
+            ProgressReport progressReport) {
         boolean success = false;
         try {
             for (InputFile inputFile : inputFiles) {
