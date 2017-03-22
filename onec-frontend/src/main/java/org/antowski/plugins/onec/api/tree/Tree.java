@@ -6,7 +6,11 @@ import com.google.common.annotations.Beta;
 import org.antowski.plugins.onec.api.tree.lexical.SyntaxToken;
 import org.antowski.plugins.onec.api.tree.lexical.SyntaxTrivia;
 
+import org.antowski.plugins.onec.api.visitors.DoubleDispatchVisitor;
 import org.sonar.sslr.grammar.GrammarRuleKey;
+
+import javax.annotation.Nullable;
+import java.util.Iterator;
 
 /**
  * Common interface for all nodes in an abstract syntax tree.
@@ -14,12 +18,25 @@ import org.sonar.sslr.grammar.GrammarRuleKey;
 @Beta
 public interface Tree {
 
-    boolean is(Kinds... kind);
+    boolean is(Kind... kind);
 
-    public enum Kind implements GrammarRuleKey, Kinds {
+    void accept(DoubleDispatchVisitor visitor);
 
+    Kind getKind();
+
+    @Nullable
+    Tree parent();
+
+    void setParent(Tree parent);
+
+    boolean isLeaf();
+
+    Iterator<Tree> childrenIterator();
+
+    public enum Kind implements GrammarRuleKey {
+
+        COMPILATION_UNIT(CompilationUnitTree.class),
         TOKEN(SyntaxToken.class),
-
         TRIVIA(SyntaxTrivia.class);
 
         final Class<? extends Tree> associatedInterface;
@@ -30,11 +47,6 @@ public interface Tree {
 
         public Class<? extends Tree> getAssociatedInterface() {
             return associatedInterface;
-        }
-
-        @Override
-        public boolean contains(Kinds other) {
-            return this.equals(other);
         }
 
     }

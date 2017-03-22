@@ -1,17 +1,21 @@
 
 package org.antowski.onec.parser;
 
+import com.google.common.collect.Lists;
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.api.typed.ActionParser;
 import com.sonar.sslr.impl.Parser;
 import org.antowski.onec.OneCConfiguration;
 import org.antowski.onec.OneCGrammar;
 import org.antowski.onec.OneCLexer;
+import org.antowski.onec.tree.impl.OneCTree;
 import org.antowski.plugins.onec.api.tree.Tree;
 import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.util.Iterator;
+import java.util.Objects;
 
 public class OneCParser extends ActionParser<Tree> {
 
@@ -32,21 +36,23 @@ public class OneCParser extends ActionParser<Tree> {
 
     @Override
     public Tree parse(File file) {
-        return createParentLink((OneCTree) super.parse(file));
+        return createParentLink(super.parse(file));
     }
 
     @Override
     public Tree parse(String source) {
-        return createParentLink((OneCTree) super.parse(source));
+        return createParentLink(super.parse(source));
     }
 
-    private static Tree createParentLink(OneCTree parent) {
-        if (!parent.isLeaf()) {
-            for (Tree nextTree : parent.getChildren()) {
-                OneCTree next = (OneCTree) nextTree;
-                if (next != null) {
-                    next.setParent(parent);
-                    createParentLink(next);
+    private static Tree createParentLink(Tree parent) {
+        OneCTree onecTree = (OneCTree) parent;
+        Iterator<Tree> childrenIterator = onecTree.childrenIterator();
+        while (childrenIterator.hasNext()) {
+            OneCTree child = (OneCTree) childrenIterator.next();
+            if (child != null) {
+                child.setParent(parent);
+                if (!child.isLeaf()) {
+                    createParentLink(child);
                 }
             }
         }

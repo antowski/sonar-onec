@@ -2,40 +2,20 @@
 package org.antowski.onec.tree.impl;
 
 import java.util.Iterator;
-import java.util.Objects;
-import java.util.Spliterator;
-import java.util.Spliterators;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import org.antowski.plugins.onec.api.tree.Kinds;
 import org.antowski.plugins.onec.api.tree.Tree;
 import org.antowski.plugins.onec.api.tree.lexical.SyntaxToken;
-import org.sonar.sslr.grammar.GrammarRuleKey;
-
-import javax.annotation.Nullable;
 
 public abstract class OneCTree implements Tree {
 
-    @Nullable
     private Tree parent;
 
-    protected GrammarRuleKey grammarRuleKey;
-
-
-    public OneCTree(GrammarRuleKey grammarRuleKey) {
-        this.grammarRuleKey = grammarRuleKey;
-    }
-
-    public int getLine() {
-        return getFirstToken().line();
-    }
-
     @Override
-    public final boolean is(Kinds... kind) {
+    public final boolean is(Kind... kind) {
         if (getKind() != null) {
-            for (Kinds kindIter : kind) {
-                if (kindIter.contains(getKind())) {
+            for (Kind kindIter : kind) {
+                if (getKind() == kindIter) {
                     return true;
                 }
             }
@@ -43,16 +23,21 @@ public abstract class OneCTree implements Tree {
         return false;
     }
 
-    public abstract Kind getKind();
+    @Override
+    public Tree parent() {
+        return parent;
+    }
 
-    /**
-     * Creates iterator for children of this node.
-     * Note that iterator may contain {@code null} elements.
-     *
-     * @throws UnsupportedOperationException if {@link #isLeaf()} returns {@code true}
-     */
-    public abstract Iterator<Tree> childrenIterator();
+    @Override
+    public void setParent(Tree parent) {
+        this.parent = parent;
+    }
 
+    public int getLine() {
+        return getFirstToken().line();
+    }
+
+    @Override
     public boolean isLeaf() {
         return false;
     }
@@ -83,55 +68,5 @@ public abstract class OneCTree implements Tree {
             }
         } while (child == null);
         return ((OneCTree) child).getFirstToken();
-    }
-
-    public boolean isAncestorOf(OneCTree tree) {
-        Tree parentTree = tree.getParent();
-        if (this.equals(parentTree)) {
-            return true;
-        }
-        if (parentTree == null) {
-            return false;
-        }
-        return this.isAncestorOf((OneCTree) parentTree);
-    }
-
-    public Stream<OneCTree> descendants() {
-        if (this.isLeaf()) {
-            return Stream.empty();
-        }
-        Stream<OneCTree> kins = childrenStream().filter(Objects::nonNull)
-                .filter(tree -> tree instanceof OneCTree)
-                .map(tree -> (OneCTree) tree);
-        for (Iterator<Tree> iterator = this.childrenIterator(); iterator.hasNext(); ) {
-            Tree tree = iterator.next();
-            if (tree != null) {
-                kins = Stream.concat(kins, ((OneCTree) tree).descendants());
-            }
-        }
-        return kins;
-    }
-
-    private Stream<Tree> childrenStream() {
-        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(childrenIterator(), Spliterator.ORDERED), false);
-    }
-
-    public void setParent(Tree parent) {
-        this.parent = (OneCTree) parent;
-    }
-
-    public Tree getParent() {
-        return parent;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        Iterator<Tree> children = childrenIterator();
-        while (children.hasNext()) {
-            sb.append(children.next());
-            sb.append(" ");
-        }
-        return sb.toString();
     }
 }
