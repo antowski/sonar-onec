@@ -1,13 +1,8 @@
 
 package org.antowski.onec.parser;
 
-import com.google.common.collect.Lists;
-import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.api.typed.ActionParser;
-import com.sonar.sslr.impl.Parser;
-import org.antowski.onec.OneCConfiguration;
 import org.antowski.onec.OneCGrammar;
-import org.antowski.onec.OneCLexer;
 import org.antowski.onec.tree.impl.OneCTree;
 import org.antowski.plugins.onec.api.tree.Tree;
 import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
@@ -15,7 +10,6 @@ import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.Iterator;
-import java.util.Objects;
 
 public class OneCParser extends ActionParser<Tree> {
 

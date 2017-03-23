@@ -3,14 +3,9 @@ package org.antowski.sonar.plugins.onec;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
-import com.google.common.collect.ImmutableList;
 import com.sonar.sslr.api.RecognitionException;
 import com.sonar.sslr.api.typed.ActionParser;
-import org.antowski.onec.checks.CheckList;
-import org.antowski.onec.FileLinesVisitor;
-import org.antowski.onec.OneCAstScanner;
 import org.antowski.onec.OneCConfiguration;
-import org.antowski.onec.OneCMetric;
 import org.antowski.onec.parser.OneCParser;
 import org.antowski.plugins.onec.api.tree.Tree;
 import org.antowski.plugins.onec.api.visitors.TreeVisitor;
@@ -19,14 +14,12 @@ import com.sonar.sslr.api.Grammar;
 
 import java.io.File;
 import java.io.InterruptedIOException;
-import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import org.sonar.api.batch.fs.FilePredicate;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.rule.CheckFactory;
-import org.sonar.api.batch.rule.Checks;
 import org.sonar.api.batch.sensor.Sensor;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.SensorDescriptor;
@@ -41,22 +34,14 @@ import org.sonar.api.batch.fs.InputFile;
 
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.FileLinesContextFactory;
-import org.sonar.api.measures.Metric;
 import org.sonar.api.rule.RuleKey;
 
 import org.sonar.squidbridge.AstScanner;
-import org.sonar.squidbridge.SquidAstVisitor;
 import org.sonar.squidbridge.api.AnalysisException;
-import org.sonar.squidbridge.api.CheckMessage;
-import org.sonar.squidbridge.api.SourceCode;
-import org.sonar.squidbridge.api.SourceFile;
-import org.sonar.squidbridge.indexer.QueryByType;
 
 import org.sonar.squidbridge.ProgressReport;
 
 public class OneCSensor implements Sensor {
-
-    //private final Checks<SquidAstVisitor<Grammar>> checks;
 
     private SensorContext context;
     private AstScanner<Grammar> scanner;
@@ -70,9 +55,6 @@ public class OneCSensor implements Sensor {
     private static final Logger LOG = Loggers.get(OneCSensor.class);
 
     public OneCSensor(FileSystem fileSystem, FileLinesContextFactory fileLinesContextFactory, CheckFactory checkFactory) {
-//        this.checks = checkFactory
-//            .<SquidAstVisitor<Grammar>>create(CheckList.REPOSITORY_KEY)
-//            .addAnnotatedChecks(CheckList.getChecks());
         this.fileSystem = fileSystem;
         this.mainFilePredicate = fileSystem.predicates().and(
                 fileSystem.predicates().hasType(InputFile.Type.MAIN),
@@ -133,7 +115,7 @@ public class OneCSensor implements Sensor {
     private void analyseFile(SensorContext sensorContext, InputFile inputFile, List<TreeVisitor> treeVisitors) {
 
         try {
-            ActionParser<Tree> parser = OneCParser.createParser(createConfiguration().getCharset());
+            ActionParser<Tree> parser = OneCParser.createParser(sensorContext.fileSystem().encoding());
             Tree ast = parser.parse(new File(inputFile.absolutePath()));
             scanFile(inputFile, ast, treeVisitors);
 

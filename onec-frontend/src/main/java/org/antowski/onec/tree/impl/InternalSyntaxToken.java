@@ -3,9 +3,9 @@ package org.antowski.onec.tree.impl;
 import org.antowski.plugins.onec.api.tree.Tree;
 import org.antowski.plugins.onec.api.tree.lexical.SyntaxToken;
 import org.antowski.plugins.onec.api.tree.lexical.SyntaxTrivia;
-import org.antowski.plugins.onec.api.visitors.TreeVisitor;
-import org.sonar.sslr.grammar.GrammarRuleKey;
+import org.antowski.plugins.onec.api.visitors.DoubleDispatchVisitor;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class InternalSyntaxToken extends OneCTree implements SyntaxToken {
@@ -19,7 +19,6 @@ public class InternalSyntaxToken extends OneCTree implements SyntaxToken {
     private final boolean isEOF;
 
     protected InternalSyntaxToken(InternalSyntaxToken internalSyntaxToken) {
-        super(null);
         this.value = internalSyntaxToken.value;
         this.line = internalSyntaxToken.line;
         this.column = internalSyntaxToken.column;
@@ -30,7 +29,6 @@ public class InternalSyntaxToken extends OneCTree implements SyntaxToken {
     }
 
     public InternalSyntaxToken(int line, int column, String value, List<SyntaxTrivia> trivias, int startIndex, int endIndex, boolean isEOF) {
-        super(null);
         this.value = value;
         this.line = line;
         this.column = column;
@@ -38,20 +36,6 @@ public class InternalSyntaxToken extends OneCTree implements SyntaxToken {
         this.startIndex = startIndex;
         this.endIndex = endIndex;
         this.isEOF = isEOF;
-    }
-
-    public int fromIndex() {
-        return startIndex;
-    }
-
-    @Override
-    public SyntaxToken firstToken() {
-        return this;
-    }
-
-    @Override
-    public SyntaxToken lastToken() {
-        return this;
     }
 
     @Override
@@ -70,7 +54,7 @@ public class InternalSyntaxToken extends OneCTree implements SyntaxToken {
     }
 
     @Override
-    public void accept(TreeVisitor visitor) {
+    public void accept(DoubleDispatchVisitor visitor) {
         // FIXME do nothing at the moment
     }
 
@@ -90,11 +74,6 @@ public class InternalSyntaxToken extends OneCTree implements SyntaxToken {
     }
 
     @Override
-    public Kind kind() {
-        return Kind.TOKEN;
-    }
-
-    @Override
     public boolean isLeaf() {
         return true;
     }
@@ -104,11 +83,8 @@ public class InternalSyntaxToken extends OneCTree implements SyntaxToken {
     }
 
     @Override
-    public Iterable<Tree> children() {
+    public Iterator<Tree> childrenIterator() {
         throw new UnsupportedOperationException();
     }
 
-    public void setGrammarRuleKey(GrammarRuleKey grammarRuleKey) {
-        this.grammarRuleKey = grammarRuleKey;
-    }
 }
