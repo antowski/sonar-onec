@@ -2,7 +2,7 @@
 package org.antowski.onec.parser;
 
 import com.sonar.sslr.api.typed.ActionParser;
-import org.antowski.onec.tree.impl.OneCTree;
+import org.antowski.onec.model.OneCTree;
 import org.antowski.plugins.onec.api.tree.Tree;
 import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 

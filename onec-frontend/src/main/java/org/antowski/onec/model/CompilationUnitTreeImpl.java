@@ -1,4 +1,4 @@
-package org.antowski.onec.tree.impl;
+package org.antowski.onec.model;
 
 import com.google.common.collect.Iterables;
 import org.antowski.plugins.onec.api.tree.CompilationUnitTree;

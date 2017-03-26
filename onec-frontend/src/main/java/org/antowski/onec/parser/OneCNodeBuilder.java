@@ -5,9 +5,9 @@ import com.sonar.sslr.api.*;
 import com.sonar.sslr.api.typed.Input;
 import com.sonar.sslr.api.typed.NodeBuilder;
 import org.sonar.sslr.grammar.GrammarRuleKey;
-import org.antowski.onec.tree.impl.InternalSyntaxSpacing;
-import org.antowski.onec.tree.impl.InternalSyntaxToken;
-import org.antowski.onec.tree.impl.InternalSyntaxTrivia;
+import org.antowski.onec.model.InternalSyntaxSpacing;
+import org.antowski.onec.model.InternalSyntaxToken;
+import org.antowski.onec.model.InternalSyntaxTrivia;
 import org.antowski.plugins.onec.api.tree.lexical.SyntaxTrivia;
 
 import java.util.List;

@@ -2,11 +2,8 @@
 package org.antowski.onec.parser;
 
 import com.sonar.sslr.api.typed.GrammarBuilder;
-import org.antowski.onec.tree.impl.CompilationUnitTreeImpl;
-import org.antowski.onec.tree.impl.InternalSyntaxToken;
-import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
-
-import static com.sonar.sslr.api.GenericTokenType.EOF;
+import org.antowski.onec.model.CompilationUnitTreeImpl;
+import org.antowski.onec.model.InternalSyntaxToken;
 
 public class OneCGrammar {
 

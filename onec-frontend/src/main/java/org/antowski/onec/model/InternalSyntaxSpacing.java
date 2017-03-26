@@ -1,9 +1,7 @@
-package org.antowski.onec.tree.impl;
+package org.antowski.onec.model;
 
 import org.antowski.plugins.onec.api.tree.Tree;
 import org.antowski.plugins.onec.api.visitors.DoubleDispatchVisitor;
-
-import java.util.Iterator;
 
 public class InternalSyntaxSpacing extends OneCTree {
 

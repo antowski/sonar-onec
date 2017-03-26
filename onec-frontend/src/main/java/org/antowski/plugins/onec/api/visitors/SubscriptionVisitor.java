@@ -1,12 +1,11 @@
 package org.antowski.plugins.onec.api.visitors;
 
 import com.google.common.base.Preconditions;
-import org.antowski.onec.tree.impl.OneCTree;
+import org.antowski.onec.model.OneCTree;
 import org.antowski.plugins.onec.api.tree.Tree;
 import org.antowski.plugins.onec.api.tree.Tree.Kind;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 public abstract class SubscriptionVisitor implements TreeVisitor {

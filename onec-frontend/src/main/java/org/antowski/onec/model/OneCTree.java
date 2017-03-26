@@ -1,8 +1,7 @@
 
-package org.antowski.onec.tree.impl;
+package org.antowski.onec.model;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.antowski.plugins.onec.api.tree.Tree;

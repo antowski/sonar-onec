@@ -1,13 +1,10 @@
 package org.antowski.onec.parser;
 
 import com.google.common.collect.ImmutableList;
-import com.sonar.sslr.api.typed.Optional;
-import org.antowski.onec.tree.impl.CompilationUnitTreeImpl;
-import org.antowski.onec.tree.impl.InternalSyntaxToken;
-import org.antowski.onec.tree.impl.OneCTree;
+import org.antowski.onec.model.CompilationUnitTreeImpl;
+import org.antowski.onec.model.InternalSyntaxToken;
+import org.antowski.onec.model.OneCTree;
 import org.antowski.plugins.onec.api.tree.VariableDeclarationTree;
-
-import java.util.List;
 
 public class TreeFactory {
 

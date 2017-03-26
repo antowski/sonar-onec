@@ -1,4 +1,4 @@
-package org.antowski.onec.tree.impl;
+package org.antowski.onec.model;
 
 import org.antowski.plugins.onec.api.tree.Tree;
 import org.antowski.plugins.onec.api.tree.lexical.SyntaxTrivia;
