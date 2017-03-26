@@ -1,12 +1,10 @@
 package org.antowski.onec.tree.impl;
 
 import org.antowski.plugins.onec.api.tree.Tree;
-import org.antowski.plugins.onec.api.tree.lexical.SyntaxToken;
 import org.antowski.plugins.onec.api.tree.lexical.SyntaxTrivia;
 import org.antowski.plugins.onec.api.visitors.DoubleDispatchVisitor;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 public class InternalSyntaxTrivia extends OneCTree implements SyntaxTrivia {
@@ -42,7 +40,7 @@ public class InternalSyntaxTrivia extends OneCTree implements SyntaxTrivia {
     }
 
     @Override
-    public Kind getKind() {
+    public Kind kind() {
         return Kind.TRIVIA;
     }
 
@@ -52,7 +50,7 @@ public class InternalSyntaxTrivia extends OneCTree implements SyntaxTrivia {
     }
 
     @Override
-    public Iterator<Tree> childrenIterator() {
+    public Iterable<Tree> children() {
         throw new UnsupportedOperationException();
     }
 
@@ -70,13 +68,4 @@ public class InternalSyntaxTrivia extends OneCTree implements SyntaxTrivia {
         //FIXME do nothing
     }
 
-    @Override
-    public SyntaxToken getFirstToken() {
-        return this;
-    }
-
-    @Override
-    public SyntaxToken getLastToken() {
-        return this;
-    }
 }

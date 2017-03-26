@@ -16,7 +16,7 @@ public class InternalSyntaxSpacing extends OneCTree {
     }
 
     @Override
-    public Kind getKind() {
+    public Kind kind() {
         return Tree.Kind.TRIVIA;
     }
 
@@ -26,7 +26,7 @@ public class InternalSyntaxSpacing extends OneCTree {
     }
 
     @Override
-    public Iterator<Tree> childrenIterator() {
+    public Iterable<Tree> children() {
         throw new UnsupportedOperationException();
     }
 

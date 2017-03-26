@@ -63,16 +63,13 @@ public abstract class SubscriptionVisitor implements TreeVisitor {
     }
 
     protected boolean isSubscribed(Tree tree) {
-        return nodesToVisit.contains(((OneCTree) tree).getKind());
+        return nodesToVisit.contains(((OneCTree) tree).kind());
     }
 
     private void visitChildren(Tree tree) {
         OneCTree onecTree = (OneCTree) tree;
-
         if (!onecTree.isLeaf()) {
-            for (Iterator<Tree> iter = onecTree.childrenIterator(); iter.hasNext(); ) {
-                Tree next = iter.next();
-
+            for (Tree next : onecTree.getChildren()) {
                 if (next != null) {
                     visit(next);
                 }

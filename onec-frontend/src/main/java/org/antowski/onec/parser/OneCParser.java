@@ -2,14 +2,12 @@
 package org.antowski.onec.parser;
 
 import com.sonar.sslr.api.typed.ActionParser;
-import org.antowski.onec.OneCGrammar;
 import org.antowski.onec.tree.impl.OneCTree;
 import org.antowski.plugins.onec.api.tree.Tree;
 import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 
 import java.io.File;
 import java.nio.charset.Charset;
-import java.util.Iterator;
 
 public class OneCParser extends ActionParser<Tree> {
 
@@ -30,23 +28,21 @@ public class OneCParser extends ActionParser<Tree> {
 
     @Override
     public Tree parse(File file) {
-        return createParentLink(super.parse(file));
+        return createParentLink((OneCTree) super.parse(file));
     }
 
     @Override
     public Tree parse(String source) {
-        return createParentLink(super.parse(source));
+        return createParentLink((OneCTree) super.parse(source));
     }
 
-    private static Tree createParentLink(Tree parent) {
-        OneCTree onecTree = (OneCTree) parent;
-        Iterator<Tree> childrenIterator = onecTree.childrenIterator();
-        while (childrenIterator.hasNext()) {
-            OneCTree child = (OneCTree) childrenIterator.next();
-            if (child != null) {
-                child.setParent(parent);
-                if (!child.isLeaf()) {
-                    createParentLink(child);
+    private static Tree createParentLink(OneCTree parent) {
+        if (!parent.isLeaf()) {
+            for (Tree nextTree : parent.getChildren()) {
+                OneCTree next = (OneCTree) nextTree;
+                if (next != null) {
+                    next.setParent(parent);
+                    createParentLink(next);
                 }
             }
         }

@@ -44,7 +44,7 @@ public class InternalSyntaxToken extends OneCTree implements SyntaxToken {
     }
 
     @Override
-    public Kind getKind() {
+    public Kind kind() {
         return Kind.TOKEN;
     }
 
@@ -83,7 +83,7 @@ public class InternalSyntaxToken extends OneCTree implements SyntaxToken {
     }
 
     @Override
-    public Iterator<Tree> childrenIterator() {
+    public Iterable<Tree> children() {
         throw new UnsupportedOperationException();
     }
 

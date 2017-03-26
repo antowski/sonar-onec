@@ -15,11 +15,12 @@ import org.antowski.plugins.onec.api.tree.lexical.SyntaxToken;
 @Beta
 public interface CompilationUnitTree extends Tree {
 
-    /*
+
 
     @Nullable
-    List<VariableDeclarationTree> variableDeclaration();
+    List<VariableDeclarationTree> variableDeclarations();
 
+    /*
     @Nullable
     List<FunctionForwardDeclarationTree> functionForwardDeclarationTree();
 

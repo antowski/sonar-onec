@@ -30,24 +30,27 @@ public abstract class DoubleDispatchVisitor implements TreeVisitor {
         }
     }
 
-    protected void scanChildren(Tree tree) {
-        Iterator<Tree> childrenIterator = tree.childrenIterator();
-        Tree child;
-
-        while (childrenIterator.hasNext()) {
-            child = childrenIterator.next();
-            if (child != null) {
-                child.accept(this);
-            }
-        }
-    }
+//    protected void scanChildren(Tree tree) {
+//        Iterator<Tree> childrenIterator = tree.childrenIterator();
+//        Tree child;
+//
+//        while (childrenIterator.hasNext()) {
+//            child = childrenIterator.next();
+//            if (child != null) {
+//                child.accept(this);
+//            }
+//        }
+//    }
 
     protected <T extends Tree> void scan(List<T> trees) {
         trees.forEach(this::scan);
     }
 
     public void visitCompilationUnit(CompilationUnitTree tree) {
-        scanChildren(tree);
+        //scanChildren(tree);
+
+        scan(tree.variableDeclarations());
+
     }
 
 

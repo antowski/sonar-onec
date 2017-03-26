@@ -104,7 +104,7 @@ public class OneCTreeTest extends JavaScriptTreeModelTest {
     when(tree.getFirstToken()).thenCallRealMethod();
     when(tree.getLastToken()).thenCallRealMethod();
     when(tree.getLine()).thenCallRealMethod();
-    when(tree.getKind()).thenReturn(Kind.SCRIPT);
+    when(tree.kind()).thenReturn(Kind.SCRIPT);
     when(tree.childrenIterator()).thenReturn(Arrays.asList((Tree) child1, (Tree) child2).iterator());
 
     return tree;

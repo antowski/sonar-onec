@@ -22,16 +22,18 @@ public interface Tree {
 
     void accept(DoubleDispatchVisitor visitor);
 
-    Kind getKind();
+    Kind kind();
 
     @Nullable
     Tree parent();
 
+    @Nullable
+    SyntaxToken firstToken();
+
+    @Nullable
+    SyntaxToken lastToken();
+
     void setParent(Tree parent);
-
-    boolean isLeaf();
-
-    Iterator<Tree> childrenIterator();
 
     public enum Kind implements GrammarRuleKey {
 
