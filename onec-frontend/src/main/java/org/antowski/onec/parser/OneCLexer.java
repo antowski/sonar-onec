@@ -3,6 +3,7 @@ package org.antowski.onec.parser;
 import com.sonar.sslr.api.GenericTokenType;
 import org.antowski.onec.ast.api.OneCKeyword;
 import org.antowski.onec.ast.api.OneCTokenType;
+import org.sonar.api.internal.apachecommons.lang.ArrayUtils;
 import org.sonar.sslr.grammar.GrammarRuleKey;
 import org.sonar.sslr.grammar.LexerlessGrammarBuilder;
 
@@ -42,25 +43,25 @@ public enum OneCLexer implements GrammarRuleKey {
     }
 
     private static void keywords(LexerlessGrammarBuilder b) {
-        Object[] rest = new Object[OneCKeyword.values().length - 2];
 
         for (int i = 0; i < OneCKeyword.values().length; i++) {
             OneCKeyword tokenType = OneCKeyword.values()[i];
 
             // 1C keywords are case insensitive
             b.rule(tokenType).is(SPACING,
-                    b.regexp("(?i)" + tokenType.getEnValue() + "|" + tokenType.getRuValue()),
+                    b.regexp("(?iu)" + tokenType.getEnValue() + "|" + tokenType.getRuValue()),
                     b.nextNot(b.regexp(LexicalConstant.IDENTIFIER_PART))).skip();
-            if (i > 1) {
-                rest[i - 2] = b.regexp("(?i)" + tokenType.getEnValue());
-            }
         }
+
+        OneCKeyword[] keywords = OneCKeyword.values();
+        Arrays.sort(keywords);
+        ArrayUtils.reverse(keywords);
 
         b.rule(KEYWORD).is(SPACING,
                 b.firstOf(
-                        OneCKeyword.keywordValues()[0],
-                        OneCKeyword.keywordValues()[1],
-                        rest),
+                        keywords[0],
+                        keywords[1],
+                        ArrayUtils.subarray(keywords, 2, keywords.length)),
                 b.nextNot(b.regexp(LexicalConstant.IDENTIFIER_PART))
         );
     }

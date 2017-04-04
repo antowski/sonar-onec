@@ -2,13 +2,11 @@ package org.antowski.onec.ast.api;
 
 import org.sonar.sslr.grammar.GrammarRuleKey;
 
-/**
- * Created by antowski on 03.04.2017.
- */
 public enum OneCKeyword implements GrammarRuleKey {
 
-    IF("if","если"),
-    THEN("then","тогда");
+    IF("if","Если"),
+    THEN("then","Тогда"),
+    ELSIF("Elsif","ИначеЕсли");
 
     private final String EnValue;
     private final String RuValue;

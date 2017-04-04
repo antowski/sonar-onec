@@ -38,6 +38,16 @@ public class InternalSyntaxToken extends OneCTree implements SyntaxToken {
     }
 
     @Override
+    public SyntaxToken firstToken() {
+        return this;
+    }
+
+    @Override
+    public SyntaxToken lastToken() {
+        return this;
+    }
+
+    @Override
     public String text() {
         return value;
     }

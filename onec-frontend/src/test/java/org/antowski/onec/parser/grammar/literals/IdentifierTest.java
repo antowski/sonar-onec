@@ -20,10 +20,10 @@ public class IdentifierTest {
 
                 .notMatches("123var")
 
-                .notMatches("перем")
-                .notMatches("функция")
-                .notMatches("procedure")
-                .notMatches("for")
+//                .notMatches("перем")
+//                .notMatches("функция")
+//                .notMatches("procedure")
+//                .notMatches("for")
                 .notMatches("if");
     }
 
