@@ -64,7 +64,7 @@ public class Assertions{
             String expected = "Rule '" + getRuleName() + "' should match:\n" + input;
             try {
                 parseTillEof(input);
-            } catch (RecognitionException e) {
+            } catch (RecognitionException e) {  //NOSONAR
                 String actual = e.getMessage();
                 throw new ParsingResultComparisonFailure(expected, actual);
             }
@@ -79,7 +79,7 @@ public class Assertions{
             isNotNull();
             try {
                 parseTillEof(input);
-            } catch (RecognitionException e) {
+            } catch (RecognitionException e) {  //NOSONAR
                 // expected
                 return this;
             }

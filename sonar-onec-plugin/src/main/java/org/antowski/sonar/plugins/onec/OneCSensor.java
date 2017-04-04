@@ -104,9 +104,9 @@ public class OneCSensor implements Sensor {
                 progressReport.nextFile();
             }
             success = true;
-        } catch (CancellationException e) {
+        } catch (CancellationException e) {  //NOSONAR
             // do not propagate the exception
-            LOG.debug(e.toString());    //NOSONAR
+            LOG.debug(e.toString());
         } finally {
             stopProgressReport(progressReport, success);
         }
