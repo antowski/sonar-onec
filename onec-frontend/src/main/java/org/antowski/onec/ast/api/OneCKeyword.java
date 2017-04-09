@@ -4,9 +4,35 @@ import org.sonar.sslr.grammar.GrammarRuleKey;
 
 public enum OneCKeyword implements GrammarRuleKey {
 
+    AND("And","И"),
+    OR("Or","ИЛИ"),
+    NOT("Not","Не"),
+
     IF("if","Если"),
     THEN("then","Тогда"),
-    ELSIF("Elsif","ИначеЕсли");
+    ELSIF("Elsif","ИначеЕсли"),
+    ELSE("Else","Иначе"),
+    ENDIF("Endlf","КонецЕсли"),
+
+    WHILE("While","Пока"),
+    FOR("For","Для"),
+    TO("To","По"),
+    DO("Do","Цикл"),
+    ENDDO("EndDo","КонецЦикла"),
+
+    PROCEDURE("Procedure","Процедура"),
+    ENDPROCEDURE("EndProcedure","КонецПроцедуры"),
+    FUNCTION("Function","Функция"),
+    ENDFUNCTION("EndFunction","КонецФункции"),
+
+    VAR("Var","Перем"),
+    VAL("Val","Знач"),
+    CONTEXT("Context","Контекст"),
+
+    GOTO("Goto","Перейти"),
+    RETURN("Return","Возврат"),
+    CONTINUE("Continue","Продолжить"),
+    BREAK("Break","Прервать");
 
     private final String EnValue;
     private final String RuValue;

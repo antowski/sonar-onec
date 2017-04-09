@@ -9,7 +9,7 @@ public class OneCTokenTypeTest {
 
     @Test
     public void test() {
-        assertThat(OneCTokenType.values()).hasSize(5);
+        assertThat(OneCTokenType.values()).hasSize(4);
 
         for (OneCTokenType tokenType : OneCTokenType.values()) {
             assertThat(tokenType.getName()).isEqualTo(tokenType.name());

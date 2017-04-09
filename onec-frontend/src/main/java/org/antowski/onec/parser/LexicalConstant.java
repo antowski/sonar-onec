@@ -15,4 +15,7 @@ public class LexicalConstant {
     public static final String IDENTIFIER_PART = "[" + IDENTIFIER_START + "[0-9]]";
     public static final String IDENTIFIER = IDENTIFIER_START + IDENTIFIER_PART + "*";
 
+    public static final String DATE_LITERAL = "'[^'\\n]*'";
+    public static final String NUMERIC_LITERAL = "\\d+\\.*[\\d]*";
+
 }

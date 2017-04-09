@@ -8,7 +8,6 @@ import org.sonar.sslr.grammar.GrammarRuleKey;
 
 public enum OneCTokenType implements GrammarRuleKey {
 
-    CHARACTER_LITERAL,
     NUMERIC_LITERAL,
     DATE_LITERAL,
     STRING_LITERAL,
