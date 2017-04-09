@@ -17,5 +17,6 @@ public class LexicalConstant {
 
     public static final String DATE_LITERAL = "'[^'\\n]*'";
     public static final String NUMERIC_LITERAL = "\\d+\\.*[\\d]*";
+    public static final String STRING_LITERAL = "\"[^\"]*\"";
 
 }

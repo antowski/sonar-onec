@@ -84,6 +84,7 @@ public enum OneCLexer implements GrammarRuleKey {
 
         b.rule(OneCTokenType.DATE_LITERAL).is(b.regexp(LexicalConstant.DATE_LITERAL), SPACING);
         b.rule(OneCTokenType.NUMERIC_LITERAL).is(b.regexp(LexicalConstant.NUMERIC_LITERAL), SPACING);
+        b.rule(OneCTokenType.STRING_LITERAL).is(b.regexp(LexicalConstant.STRING_LITERAL), SPACING);
 
     }
 
