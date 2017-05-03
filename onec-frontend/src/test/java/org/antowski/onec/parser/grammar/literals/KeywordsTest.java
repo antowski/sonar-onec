@@ -34,6 +34,7 @@ public class KeywordsTest {
                 .matches("Перейти")
                 .matches("Знач")
                 .matches("Контекст")
+                .matches("Экспорт")
 
                 .matches("И")
                 .matches("ИЛИ")

@@ -27,6 +27,7 @@ public enum OneCKeyword implements GrammarRuleKey {
 
     VAR("Var","Перем"),
     VAL("Val","Знач"),
+    EXPORT("Export","Экспорт"),
     CONTEXT("Context","Контекст"),
 
     GOTO("Goto","Перейти"),

@@ -50,6 +50,11 @@ public enum OneCLexer implements GrammarRuleKey {
     KEYWORD,
 
     /**
+     * Declaration
+     */
+    VARIABLE_DECLARATION,
+
+    /**
      * SPACING
      */
     SPACING,
