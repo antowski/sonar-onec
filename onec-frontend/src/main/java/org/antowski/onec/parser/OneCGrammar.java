@@ -3,6 +3,7 @@ package org.antowski.onec.parser;
 
 import com.sonar.sslr.api.typed.GrammarBuilder;
 import org.antowski.onec.ast.api.OneCKeyword;
+import org.antowski.onec.ast.api.OneCPunctuator;
 import org.antowski.onec.ast.api.OneCTokenType;
 import org.antowski.onec.model.CompilationUnitTreeImpl;
 import org.antowski.onec.model.InternalSyntaxToken;
@@ -28,12 +29,13 @@ public class OneCGrammar {
                                 b.token(OneCLexer.EOF)));
     }
 
-    public VariableDeclarationTreeImpl VARIABLE_DECLARATION() {
-        return b.<VariableDeclarationTreeImpl>nonterminal(OneCLexer.VARIABLE_DECLARATION)
+    public GlobalVarDeclarationTreeImpl VARIABLE_DECLARATION() {
+        return b.<GlobalVarDeclarationTreeImpl>nonterminal(OneCLexer.GLOBAL_VARIABLE_DECLARATION)
                 .is(
                         f.VariableDeclaration(
                                 b.token(OneCKeyword.VAR),
                                 b.token(OneCTokenType.IDENTIFIER)),
-                                b.optional(OneCKeyword.EXPORT));
+                                b.optional(OneCKeyword.EXPORT),
+                                b.token(OneCPunctuator.SEMICOLON));
     }
 }

@@ -52,7 +52,8 @@ public enum OneCLexer implements GrammarRuleKey {
     /**
      * Declaration
      */
-    VARIABLE_DECLARATION,
+    GLOBAL_VARIABLE_DECLARATION,
+    LOCAL_VARIABLE_DECLARATION,
 
     /**
      * SPACING
