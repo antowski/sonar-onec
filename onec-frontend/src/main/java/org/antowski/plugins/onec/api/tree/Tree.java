@@ -3,10 +3,12 @@ package org.antowski.plugins.onec.api.tree;
 
 import com.google.common.annotations.Beta;
 
+import org.antowski.plugins.onec.api.tree.expression.IdentifierTree;
 import org.antowski.plugins.onec.api.tree.lexical.SyntaxToken;
 import org.antowski.plugins.onec.api.tree.lexical.SyntaxTrivia;
 
 import org.antowski.plugins.onec.api.visitors.DoubleDispatchVisitor;
+import org.antowski.plugins.onec.api.visitors.TreeVisitor;
 import org.sonar.sslr.grammar.GrammarRuleKey;
 
 import javax.annotation.Nullable;
@@ -20,7 +22,7 @@ public interface Tree {
 
     boolean is(Kind... kind);
 
-    void accept(DoubleDispatchVisitor visitor);
+    void accept(TreeVisitor visitor);
 
     Kind kind();
 
@@ -39,7 +41,12 @@ public interface Tree {
 
         COMPILATION_UNIT(CompilationUnitTree.class),
         TOKEN(SyntaxToken.class),
-        TRIVIA(SyntaxTrivia.class);
+        TRIVIA(SyntaxTrivia.class),
+
+        /**
+         * {@link IdentifierTree}
+         */
+        IDENTIFIER(IdentifierTree.class);
 
         final Class<? extends Tree> associatedInterface;
 
