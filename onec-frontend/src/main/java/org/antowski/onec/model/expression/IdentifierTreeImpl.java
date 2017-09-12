@@ -1,7 +1,6 @@
 package org.antowski.onec.model.expression;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import org.antowski.onec.model.InternalSyntaxToken;
 import org.antowski.onec.model.OneCTree;
@@ -11,15 +10,14 @@ import org.antowski.plugins.onec.api.tree.lexical.SyntaxToken;
 import org.antowski.plugins.onec.api.visitors.TreeVisitor;
 
 import java.util.Collections;
-import java.util.List;
 
 public class IdentifierTreeImpl extends OneCTree implements IdentifierTree {
 
-    private final InternalSyntaxToken nameToken;
+    private final SyntaxToken token;
 
-    public IdentifierTreeImpl(InternalSyntaxToken nameToken) {
+    public IdentifierTreeImpl(SyntaxToken token) {
         super(Kind.IDENTIFIER);
-        this.nameToken = Preconditions.checkNotNull(nameToken);
+        this.token = Preconditions.checkNotNull(token);
     }
 
     @Override
@@ -29,7 +27,7 @@ public class IdentifierTreeImpl extends OneCTree implements IdentifierTree {
 
     @Override
     public SyntaxToken token() {
-        return nameToken;
+        return token;
     }
 
     @Override
@@ -49,7 +47,7 @@ public class IdentifierTreeImpl extends OneCTree implements IdentifierTree {
 
     @Override
     public Iterable<Tree> children() {
-        return Iterables.concat(Collections.singletonList(nameToken));
+        return Iterables.concat(Collections.singletonList(token));
     }
 
 }

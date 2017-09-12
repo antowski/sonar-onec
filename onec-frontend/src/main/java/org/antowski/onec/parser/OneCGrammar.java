@@ -7,7 +7,7 @@ import org.antowski.onec.ast.api.OneCPunctuator;
 import org.antowski.onec.ast.api.OneCTokenType;
 import org.antowski.onec.model.CompilationUnitTreeImpl;
 import org.antowski.onec.model.InternalSyntaxToken;
-import org.antowski.plugins.onec.api.tree.VariableDeclarationTree;
+//import org.antowski.plugins.onec.api.tree.VariableDeclarationTree;
 
 public class OneCGrammar {
 
@@ -29,13 +29,13 @@ public class OneCGrammar {
                                 b.token(OneCLexer.EOF)));
     }
 
-    public GlobalVarDeclarationTreeImpl VARIABLE_DECLARATION() {
-        return b.<GlobalVarDeclarationTreeImpl>nonterminal(OneCLexer.GLOBAL_VARIABLE_DECLARATION)
-                .is(
-                        f.VariableDeclaration(
-                                b.token(OneCKeyword.VAR),
-                                b.token(OneCTokenType.IDENTIFIER)),
-                                b.optional(OneCKeyword.EXPORT),
-                                b.token(OneCPunctuator.SEMICOLON));
-    }
+//    public GlobalVarDeclarationTreeImpl VARIABLE_DECLARATION() {
+//        return b.<GlobalVarDeclarationTreeImpl>nonterminal(OneCLexer.GLOBAL_VARIABLE_DECLARATION)
+//                .is(
+//                        f.VariableDeclaration(
+//                                b.token(OneCKeyword.VAR),
+//                                b.token(OneCTokenType.IDENTIFIER)),
+//                                b.optional(OneCKeyword.EXPORT),
+//                                b.token(OneCPunctuator.SEMICOLON));
+//    }
 }

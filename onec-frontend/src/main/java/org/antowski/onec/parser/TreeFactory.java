@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import org.antowski.onec.model.CompilationUnitTreeImpl;
 import org.antowski.onec.model.InternalSyntaxToken;
 import org.antowski.onec.model.OneCTree;
-import org.antowski.plugins.onec.api.tree.VariableDeclarationTree;
+//import org.antowski.plugins.onec.api.tree.VariableDeclarationTree;
 
 public class TreeFactory {
 
@@ -15,7 +15,7 @@ public class TreeFactory {
             //Optional<List<VariableDeclarationTree>> variableDeclarations,
             InternalSyntaxToken eof) {
 
-        ImmutableList.Builder<VariableDeclarationTree> variables = ImmutableList.builder();
+//        ImmutableList.Builder<VariableDeclarationTree> variables = ImmutableList.builder();
 //        if (variableDeclarations.isPresent()) {
 //            for (VariableDeclarationTree child : variableDeclarations.get()) {
 //                variables.add(child);
