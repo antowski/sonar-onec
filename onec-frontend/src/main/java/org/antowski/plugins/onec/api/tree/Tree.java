@@ -8,7 +8,6 @@ import org.antowski.plugins.onec.api.tree.lexical.SyntaxToken;
 import org.antowski.plugins.onec.api.tree.lexical.SyntaxTrivia;
 
 import org.antowski.plugins.onec.api.visitors.DoubleDispatchVisitor;
-import org.antowski.plugins.onec.api.visitors.TreeVisitor;
 import org.sonar.sslr.grammar.GrammarRuleKey;
 
 import javax.annotation.Nullable;
@@ -22,7 +21,7 @@ public interface Tree {
 
     boolean is(Kind... kind);
 
-    void accept(TreeVisitor visitor);
+    void accept(DoubleDispatchVisitor visitor);
 
     Kind kind();
 

@@ -14,6 +14,7 @@ public class InternalSyntaxTrivia extends OneCTree implements SyntaxTrivia {
     private int startLine;
 
     public InternalSyntaxTrivia(String comment, int startLine, int column) {
+        super(null);
         this.comment = comment;
         this.startLine = startLine;
         this.column = column;

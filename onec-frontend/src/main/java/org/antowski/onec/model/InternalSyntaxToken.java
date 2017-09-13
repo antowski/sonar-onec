@@ -18,6 +18,7 @@ public class InternalSyntaxToken extends OneCTree implements SyntaxToken {
     private final boolean isEOF;
 
     protected InternalSyntaxToken(InternalSyntaxToken internalSyntaxToken) {
+        super(null);
         this.value = internalSyntaxToken.value;
         this.line = internalSyntaxToken.line;
         this.column = internalSyntaxToken.column;
@@ -28,6 +29,7 @@ public class InternalSyntaxToken extends OneCTree implements SyntaxToken {
     }
 
     public InternalSyntaxToken(int line, int column, String value, List<SyntaxTrivia> trivias, int startIndex, int endIndex, boolean isEOF) {
+        super(null);
         this.value = value;
         this.line = line;
         this.column = column;

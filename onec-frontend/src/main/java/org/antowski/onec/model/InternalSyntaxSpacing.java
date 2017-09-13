@@ -9,6 +9,7 @@ public class InternalSyntaxSpacing extends OneCTree {
     private final int end;
 
     public InternalSyntaxSpacing(int start, int end) {
+        super(null);
         this.start = start;
         this.end = end;
     }

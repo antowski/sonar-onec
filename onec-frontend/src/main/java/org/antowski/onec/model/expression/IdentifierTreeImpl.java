@@ -8,10 +8,10 @@ import org.antowski.onec.model.OneCTree;
 import org.antowski.plugins.onec.api.tree.Tree;
 import org.antowski.plugins.onec.api.tree.expression.IdentifierTree;
 import org.antowski.plugins.onec.api.tree.lexical.SyntaxToken;
+import org.antowski.plugins.onec.api.visitors.DoubleDispatchVisitor;
 import org.antowski.plugins.onec.api.visitors.TreeVisitor;
 
 import java.util.Collections;
-import java.util.List;
 
 public class IdentifierTreeImpl extends OneCTree implements IdentifierTree {
 
@@ -38,11 +38,6 @@ public class IdentifierTreeImpl extends OneCTree implements IdentifierTree {
     }
 
     @Override
-    public void accept(TreeVisitor visitor) {
-        visitor.visitIdentifier(this);
-    }
-
-    @Override
     public String toString() {
         return name();
     }
@@ -50,6 +45,11 @@ public class IdentifierTreeImpl extends OneCTree implements IdentifierTree {
     @Override
     public Iterable<Tree> children() {
         return Iterables.concat(Collections.singletonList(nameToken));
+    }
+
+    @Override
+    public void accept(DoubleDispatchVisitor visitor) {
+        visitor.visitIdentifier(this);
     }
 
 }
