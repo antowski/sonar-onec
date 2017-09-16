@@ -1,4 +1,4 @@
-package org.antowski.onec.parser;
+package org.antowski.onec.ast.parser;
 
 import com.google.common.collect.ImmutableList;
 import org.antowski.onec.model.CompilationUnitTreeImpl;

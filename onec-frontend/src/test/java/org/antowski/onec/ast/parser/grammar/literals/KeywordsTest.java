@@ -1,6 +1,6 @@
-package org.antowski.onec.parser.grammar.literals;
+package org.antowski.onec.ast.parser.grammar.literals;
 
-import org.antowski.onec.parser.OneCLexer;
+import org.antowski.onec.ast.parser.OneCLexer;
 import org.junit.Test;
 
 import static org.antowski.onec.utils.Assertions.assertThat;

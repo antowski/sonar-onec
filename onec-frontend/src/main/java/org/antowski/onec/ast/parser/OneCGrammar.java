@@ -1,5 +1,5 @@
 
-package org.antowski.onec.parser;
+package org.antowski.onec.ast.parser;
 
 import com.sonar.sslr.api.typed.GrammarBuilder;
 import org.antowski.onec.model.CompilationUnitTreeImpl;
@@ -14,6 +14,8 @@ public class OneCGrammar {
         this.b = b;
         this.f = f;
     }
+
+    // Literals
 
     // Compilation unit
 

@@ -1,4 +1,4 @@
-package org.antowski.onec.parser;
+package org.antowski.onec.ast.parser;
 
 import com.sonar.sslr.api.GenericTokenType;
 import org.antowski.onec.ast.api.OneCKeyword;

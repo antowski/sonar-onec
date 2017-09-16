@@ -1,3 +1,3 @@
 @ParametersAreNonnullByDefault
-package org.antowski.onec.parser;
+package org.antowski.onec.ast.parser;
 import javax.annotation.ParametersAreNonnullByDefault;

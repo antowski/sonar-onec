@@ -6,7 +6,7 @@ import com.google.common.collect.Lists;
 import com.sonar.sslr.api.RecognitionException;
 import com.sonar.sslr.api.typed.ActionParser;
 import org.antowski.onec.OneCConfiguration;
-import org.antowski.onec.parser.OneCParser;
+import org.antowski.onec.ast.parser.OneCParser;
 import org.antowski.plugins.onec.api.tree.Tree;
 import org.antowski.plugins.onec.api.visitors.TreeVisitor;
 

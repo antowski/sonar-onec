@@ -1,4 +1,4 @@
-package org.antowski.onec.parser;
+package org.antowski.onec.ast.parser;
 
 import com.google.common.collect.Lists;
 import com.sonar.sslr.api.*;

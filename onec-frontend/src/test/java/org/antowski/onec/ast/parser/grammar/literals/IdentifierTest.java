@@ -1,4 +1,4 @@
-package org.antowski.onec.parser.grammar.literals;
+package org.antowski.onec.ast.parser.grammar.literals;
 
 import org.antowski.onec.ast.api.OneCTokenType;
 import org.junit.Test;
