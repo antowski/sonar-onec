@@ -80,10 +80,13 @@
         <sonar.version>6.2</sonar.version>
         <sonar.orchestrator.version>3.13</sonar.orchestrator.version>
         <sonarlint-core.version>2.4.1</sonarlint-core.version>
-        <sslr.version>1.21</sslr.version>
+        <sslr.version>1.22</sslr.version>
         <sslr-squid-bridge.version>2.6.1</sslr-squid-bridge.version>
-        <guava.version>21.0</guava.version>
+        <guava.version>19.0</guava.version>
         <gson.version>2.6.2</gson.version>
+
+        <!-- misc -->
+        <argLine>-Xmx512m</argLine>
 
     </properties>
 
@@ -174,7 +177,18 @@
                 <groupId>org.sonarsource.sslr</groupId>
                 <artifactId>sslr-testing-harness</artifactId>
                 <version>${sslr.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.google.guava</groupId>
+                        <artifactId>guava</artifactId>
+                    </exclusion>
+                </exclusions>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>19.0</version>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>

@@ -4,11 +4,19 @@ import com.google.common.collect.ImmutableList;
 import org.antowski.onec.model.CompilationUnitTreeImpl;
 import org.antowski.onec.model.InternalSyntaxToken;
 import org.antowski.onec.model.OneCTree;
+import org.antowski.onec.model.expression.LiteralTreeImpl;
+import org.antowski.plugins.onec.api.tree.Tree;
 import org.antowski.plugins.onec.api.tree.VariableDeclarationTree;
+import org.antowski.plugins.onec.api.tree.expression.ExpressionTree;
+import org.antowski.plugins.onec.api.tree.expression.LiteralTree;
 
 public class TreeFactory {
 
     private final KindMaps kindMaps = new KindMaps();
+
+    public ExpressionTree literal(InternalSyntaxToken token) {
+        return new LiteralTreeImpl(kindMaps.getLiteral(token.getGrammarRuleKey()), token);
+    }
 
     public CompilationUnitTreeImpl newCompilationUnit(
             OneCTree spacing,

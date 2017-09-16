@@ -3,9 +3,9 @@ package org.antowski.plugins.onec.api.visitors;
 import com.google.common.base.Preconditions;
 import org.antowski.plugins.onec.api.tree.CompilationUnitTree;
 import org.antowski.plugins.onec.api.tree.Tree;
+import org.antowski.plugins.onec.api.tree.expression.LiteralTree;
 
 import javax.annotation.Nullable;
-import java.util.Iterator;
 import java.util.List;
 
 public abstract class DoubleDispatchVisitor implements TreeVisitor {
@@ -30,24 +30,16 @@ public abstract class DoubleDispatchVisitor implements TreeVisitor {
         }
     }
 
-//    protected void scanChildren(Tree tree) {
-//        Iterator<Tree> childrenIterator = tree.childrenIterator();
-//        Tree child;
-//
-//        while (childrenIterator.hasNext()) {
-//            child = childrenIterator.next();
-//            if (child != null) {
-//                child.accept(this);
-//            }
-//        }
-//    }
-
     protected <T extends Tree> void scan(List<T> trees) {
         trees.forEach(this::scan);
     }
 
+
+    public void visitLiteral(LiteralTree tree) {
+        scan(tree);
+    }
+
     public void visitCompilationUnit(CompilationUnitTree tree) {
-        //scanChildren(tree);
 
         scan(tree.variableDeclarations());
 

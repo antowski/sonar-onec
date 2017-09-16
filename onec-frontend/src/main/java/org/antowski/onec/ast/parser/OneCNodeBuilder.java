@@ -18,6 +18,8 @@ public class OneCNodeBuilder implements NodeBuilder {
     public Object createNonTerminal(GrammarRuleKey ruleKey, Rule rule, List<Object> children, int startIndex, int endIndex) {
         for (Object child : children) {
             if (child instanceof InternalSyntaxToken) {
+                InternalSyntaxToken syntaxToken = (InternalSyntaxToken) child;
+                syntaxToken.setGrammarRuleKey(ruleKey);
                 return child;
             }
         }

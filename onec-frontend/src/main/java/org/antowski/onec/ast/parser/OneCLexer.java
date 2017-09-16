@@ -48,6 +48,7 @@ public enum OneCLexer implements GrammarRuleKey {
      */
     EOF,
     KEYWORD,
+    LITERAL,
 
     /**
      * SPACING

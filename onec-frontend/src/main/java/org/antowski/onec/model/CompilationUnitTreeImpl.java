@@ -17,6 +17,7 @@ public class CompilationUnitTreeImpl extends OneCTree implements CompilationUnit
     private final SyntaxToken eofToken;
 
     public CompilationUnitTreeImpl(@Nullable List<VariableDeclarationTree> variableDeclarations, SyntaxToken eofToken) {
+        super(Kind.COMPILATION_UNIT);
         this.variableDeclarations = variableDeclarations;
         this.eofToken = eofToken;
     }

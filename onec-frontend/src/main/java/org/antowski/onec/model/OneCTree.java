@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.antowski.plugins.onec.api.tree.Tree;
 import org.antowski.plugins.onec.api.tree.lexical.SyntaxToken;
+import org.sonar.sslr.grammar.GrammarRuleKey;
 
 import javax.annotation.Nullable;
 
@@ -13,7 +14,13 @@ public abstract class OneCTree implements Tree {
 
     private Tree parent;
 
+    protected GrammarRuleKey grammarRuleKey;
+
     private List<Tree> children;
+
+    public OneCTree(GrammarRuleKey grammarRuleKey) {
+        this.grammarRuleKey = grammarRuleKey;
+    }
 
     @Override
     @Nullable
@@ -95,4 +102,7 @@ public abstract class OneCTree implements Tree {
         return false;
     }
 
+    public GrammarRuleKey getGrammarRuleKey() {
+        return grammarRuleKey;
+    }
 }

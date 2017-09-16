@@ -2,8 +2,11 @@
 package org.antowski.onec.ast.parser;
 
 import com.sonar.sslr.api.typed.GrammarBuilder;
+import org.antowski.onec.ast.api.OneCTokenType;
 import org.antowski.onec.model.CompilationUnitTreeImpl;
 import org.antowski.onec.model.InternalSyntaxToken;
+import org.antowski.plugins.onec.api.tree.expression.ExpressionTree;
+import org.antowski.plugins.onec.api.tree.expression.LiteralTree;
 
 public class OneCGrammar {
 
@@ -16,6 +19,16 @@ public class OneCGrammar {
     }
 
     // Literals
+
+    public ExpressionTree LITERAL() {
+        return b.<ExpressionTree>nonterminal(OneCLexer.LITERAL)
+                .is(
+                        f.literal(
+                                b.firstOf(
+                                        b.token(OneCTokenType.DATE_LITERAL),
+                                        b.token(OneCTokenType.NUMERIC_LITERAL),
+                                        b.token(OneCTokenType.STRING_LITERAL))));
+    }
 
     // Compilation unit
 

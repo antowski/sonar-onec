@@ -9,7 +9,7 @@ public class OneCKeywordTest {
 
     @Test
     public void test() {
-        assertThat(OneCKeyword.values()).hasSize(24);
+        assertThat(OneCKeyword.values()).hasSize(25);
         assertThat(OneCKeyword.keywordValues()).hasSize(2 * OneCKeyword.values().length);
 
         for (OneCKeyword keyword : OneCKeyword.values()) {
