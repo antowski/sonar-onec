@@ -9,6 +9,7 @@ Desktop.ini
 
 # ---- Sonar
 .sonar
+.scannerwork
 
 # visual studio code
 .vscode
@@ -20,3 +21,4 @@ Desktop.ini
 # java
 javac-services.0.log
 javac-services.0.log.lck
+

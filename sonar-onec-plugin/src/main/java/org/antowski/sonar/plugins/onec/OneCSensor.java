@@ -2,49 +2,37 @@ package org.antowski.sonar.plugins.onec;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Throwables;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.sonar.sslr.api.RecognitionException;
 import com.sonar.sslr.api.typed.ActionParser;
-import org.antowski.onec.OneCConfiguration;
+import java.io.File;
+import java.io.InterruptedIOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import org.antowski.onec.parser.OneCParser;
 import org.antowski.plugins.onec.api.tree.Tree;
 import org.antowski.plugins.onec.api.visitors.TreeVisitor;
-
-import com.sonar.sslr.api.Grammar;
-
-import java.io.File;
-import java.io.InterruptedIOException;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-
 import org.sonar.api.batch.fs.FilePredicate;
 import org.sonar.api.batch.fs.FileSystem;
+import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.rule.CheckFactory;
 import org.sonar.api.batch.sensor.Sensor;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.SensorDescriptor;
 import org.sonar.api.batch.sensor.issue.NewIssue;
 import org.sonar.api.batch.sensor.issue.NewIssueLocation;
-
-import org.sonar.api.utils.log.Loggers;
-import org.sonar.api.utils.log.Logger;
-
-import org.sonar.api.batch.fs.FilePredicates;
-import org.sonar.api.batch.fs.InputFile;
-
-import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.FileLinesContextFactory;
 import org.sonar.api.rule.RuleKey;
-
-import org.sonar.squidbridge.AstScanner;
-import org.sonar.squidbridge.api.AnalysisException;
-
-import org.sonar.squidbridge.ProgressReport;
+import org.sonar.api.utils.log.Logger;
+import org.sonar.api.utils.log.Loggers;
+import org.sonarsource.analyzer.commons.ProgressReport;
 
 public class OneCSensor implements Sensor {
 
     private SensorContext context;
-    private AstScanner<Grammar> scanner;
 
     private final FileSystem fileSystem;
     private final FilePredicate mainFilePredicate;
@@ -79,9 +67,12 @@ public class OneCSensor implements Sensor {
                 "Report about progress of 1C:Enterprise 7.7 analyzer",
                 TimeUnit.SECONDS.toMillis(10));
 
-        progressReport.start(Lists.newArrayList(fileSystem.files(mainFilePredicate)));
+        List<InputFile> inputFiles = new ArrayList<>();
+        fileSystem.inputFiles(mainFilePredicate).forEach(inputFiles::add);
 
-        analyseFiles(context, treeVisitors, fileSystem.inputFiles(mainFilePredicate), progressReport);
+        progressReport.start(inputFiles.stream().map(InputFile::toString).collect(Collectors.toList()));
+
+        analyseFiles(context, treeVisitors, inputFiles, progressReport);
 
         //MetricsVisitor metricsVisitor = new MetricsVisitor(context,fileLinesContextFactory);
         //treeVisitors.add(metricsVisitor);
@@ -173,10 +164,6 @@ public class OneCSensor implements Sensor {
                     .at(primaryLocation)
                     .save();
         }
-    }
-
-    private OneCConfiguration createConfiguration() {
-        return new OneCConfiguration(context.fileSystem().encoding());
     }
 
     @Override

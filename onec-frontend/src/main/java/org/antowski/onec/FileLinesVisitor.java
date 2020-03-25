@@ -1,29 +1,18 @@
 
 package org.antowski.onec;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-
-import com.sonar.sslr.api.AstAndTokenVisitor;
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.GenericTokenType;
-import com.sonar.sslr.api.Grammar;
-import com.sonar.sslr.api.Token;
-import com.sonar.sslr.api.Trivia;
-
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+import org.antowski.plugins.onec.api.tree.Tree;
+import org.antowski.plugins.onec.api.tree.lexical.SyntaxToken;
+import org.antowski.plugins.onec.api.visitors.SubscriptionVisitor;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.InputFile;
-import org.sonar.api.measures.CoreMetrics;
-import org.sonar.api.measures.FileLinesContext;
 import org.sonar.api.measures.FileLinesContextFactory;
 
-import org.sonar.squidbridge.SquidAstVisitor;
-import org.sonar.squidbridge.api.SourceFile;
-
-public class FileLinesVisitor extends SquidAstVisitor<Grammar> implements AstAndTokenVisitor {
+public class FileLinesVisitor extends SubscriptionVisitor {
 
     private final FileLinesContextFactory fileLinesContextFactory;
 
@@ -42,41 +31,19 @@ public class FileLinesVisitor extends SquidAstVisitor<Grammar> implements AstAnd
         this.allLinesOfCode = linesOfCode;    
     }
 
-     @Override
-    public void visitFile(AstNode astNode) {
+    @Override
+    public void visitNode(Tree tree) {
         linesOfCode.clear();
         linesOfComments.clear();
     }
 
     @Override
-    public void visitToken(Token token) {
-
-        if (token.getType().equals(GenericTokenType.EOF)) {
-            return;
-        }
-        
-        if(token.getType() == GenericTokenType.UNKNOWN_CHAR){
-            linesOfCode.add(token.getLine());
-        }
-
-        if(token.getType() == GenericTokenType.COMMENT){
-            linesOfComments.add(token.getLine());
-        }
+    public void visitToken(SyntaxToken syntaxToken) {
+        linesOfCode.add(syntaxToken.line());
     }
 
     @Override
-    public void leaveFile(AstNode astNode) {
-        
-        InputFile inputFile = fileSystem.inputFile(fileSystem.predicates().is(getContext().getFile()));
-        if (inputFile == null){
-            throw new IllegalStateException("InputFile is null, but it should not be.");
-        }
-        
-        allLinesOfCode.put(inputFile, ImmutableSet.copyOf(linesOfCode));
-        
-        getContext().peekSourceCode().add(OneCMetric.LINES_OF_CODE, linesOfCode.size());
-        getContext().peekSourceCode().add(OneCMetric.COMMENT_LINES, linesOfComments.size());
-
+    public List<Tree.Kind> nodesToVisit() {
+        return null;
     }
-
 }

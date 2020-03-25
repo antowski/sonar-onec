@@ -13,7 +13,6 @@ public final class CheckList {
 
   public static Iterable<Class> getChecks() {
     return ImmutableList.<Class>of(
-        LineLengthCheck.class
     );
   }
 

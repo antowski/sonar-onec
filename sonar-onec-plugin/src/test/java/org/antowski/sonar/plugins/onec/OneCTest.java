@@ -1,8 +1,7 @@
 package org.antowski.sonar.plugins.onec;
 
 import org.junit.Test;
-import org.sonar.api.config.MapSettings;
-import org.sonar.api.config.Settings;
+import org.sonar.api.config.internal.MapSettings;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -11,7 +10,7 @@ public class OneCTest {
     @Test
     public void should_return_file_suffixes() {
 
-        Settings settings = new MapSettings();
+        MapSettings settings = new MapSettings();
         OneC language = new OneC(settings);
 
         // default
