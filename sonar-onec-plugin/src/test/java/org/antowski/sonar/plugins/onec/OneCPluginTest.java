@@ -13,12 +13,10 @@ public class OneCPluginTest {
 
     @Test
     public void testGetExtensions() {
-
         Plugin.Context context = new Plugin.Context(SonarRuntimeImpl.forSonarQube(Version.create(7, 9), SonarQubeSide.SCANNER, SonarEdition.COMMUNITY));
         new OneCPlugin().define(context);
 
         assertThat(context.getExtensions()).hasSize(4);
-
     }
 
 }

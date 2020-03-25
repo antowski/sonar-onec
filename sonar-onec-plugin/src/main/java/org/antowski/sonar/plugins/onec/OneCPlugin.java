@@ -11,7 +11,7 @@ public class OneCPlugin implements Plugin {
 
   private static final String GENERAL = "General";
 
-  public static final String FILE_SUFFIXES_KEY = "antowski.onec.file.suffixes";
+  static final String FILE_SUFFIXES_KEY = "antowski.onec.file.suffixes";
 
   @Override
   public void define(Context context) {

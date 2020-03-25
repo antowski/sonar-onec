@@ -10,16 +10,16 @@ public class OneCTest {
     @Test
     public void should_return_file_suffixes() {
 
-        MapSettings settings = new MapSettings();
-        OneC language = new OneC(settings);
+        MapSettings config = new MapSettings();
+        OneC language = new OneC(config.asConfig());
 
         // default
         assertThat(language.getFileSuffixes()).containsOnly(".1s");
 
-        settings.setProperty(OneCPlugin.FILE_SUFFIXES_KEY, "");
+        config.setProperty(OneCPlugin.FILE_SUFFIXES_KEY, "");
         assertThat(language.getFileSuffixes()).containsOnly(".1s");
 
-        settings.setProperty(OneCPlugin.FILE_SUFFIXES_KEY, ".bar, .foo");
+        config.setProperty(OneCPlugin.FILE_SUFFIXES_KEY, ".bar, .foo");
         assertThat(language.getFileSuffixes()).containsOnly(".bar", ".foo");
     }
 }
