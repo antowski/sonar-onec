@@ -7,10 +7,8 @@ import org.antowski.plugins.onec.api.tree.lexical.SyntaxToken;
 import org.antowski.plugins.onec.api.tree.lexical.SyntaxTrivia;
 
 import org.antowski.plugins.onec.api.visitors.DoubleDispatchVisitor;
-import org.sonar.sslr.grammar.GrammarRuleKey;
 
 import javax.annotation.Nullable;
-import java.util.Iterator;
 
 /**
  * Common interface for all nodes in an abstract syntax tree.
@@ -35,7 +33,7 @@ public interface Tree {
 
     void setParent(Tree parent);
 
-    public enum Kind implements GrammarRuleKey {
+    public enum Kind {
 
         COMPILATION_UNIT(CompilationUnitTree.class),
         TOKEN(SyntaxToken.class),

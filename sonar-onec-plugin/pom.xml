@@ -39,15 +39,10 @@
             <artifactId>onec-checks</artifactId>
             <version>${project.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.sonarsource.sslr-squid-bridge</groupId>
-            <artifactId>sslr-squid-bridge</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
+            <version>${version.commons-lang}</version>
         </dependency>
 
         <dependency>
@@ -56,18 +51,13 @@
         </dependency>
 
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
+            <artifactId>mockito-core</artifactId>
         </dependency>
 
     </dependencies>
@@ -80,10 +70,7 @@
                 <version>1.17</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <!-- the entry-point class that extends org.sonar.api.SonarPlugin -->
                     <pluginClass>org.antowski.sonar.plugins.onec.OneCPlugin</pluginClass>
-
-                    <!-- advanced properties can be set here. See paragraph "Advanced Build Properties". -->
                 </configuration>
             </plugin>
 
@@ -97,70 +84,6 @@
                 </configuration>
             </plugin>
 
-            <!--
-            <plugin>
-                <groupId>com.mycila</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <configuration>
-                    <header>com/mycila/maven/plugin/license/templates/LGPL-3.txt</header>
-                    <properties>
-                        <owner>Andrei Dzehalevich</owner>
-                        <email>antowski@gmail.com</email>
-                    </properties>
-                    <excludes>
-                        <exclude>**/README</exclude>
-                        <exclude>src/test/resources/**</exclude>
-                        <exclude>src/main/resources/**</exclude>
-                    </excludes>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            -->
-
-            <!--
-            <plugin>
-              <groupId>org.sonatype.plugins</groupId>
-              <artifactId>jarjar-maven-plugin</artifactId>
-              <executions>
-                <execution>
-                  <phase>package</phase>
-                  <goals>
-                    <goal>jarjar</goal>
-                  </goals>
-                  <configuration>
-                    <includes>
-                      <include>${project.groupId}:onec-frontend</include>
-                      <include>org.codehaus.sonar.sslr:sslr-core</include>
-                      <include>org.codehaus.sonar.sslr:sslr-xpath</include>
-                      <include>org.codehaus.sonar.sslr-squid-bridge:sslr-squid-bridge</include>
-                      <include>jaxen:jaxen</include>
-                      <include>org.codehaus.sonar.sslr:sslr-toolkit</include>
-                      <include>org.codehaus.sonar:sonar-colorizer</include>
-                      <include>org.codehaus.sonar:sonar-channel</include>
-                      <include>org.slf4j:slf4j-api</include>
-                      <include>org.slf4j:jcl-over-slf4j</include>
-                      <include>ch.qos.logback:logback-classic</include>
-                      <include>ch.qos.logback:logback-core</include>
-                      <include>commons-io:commons-io</include>
-                      <include>commons-lang:commons-lang</include>
-                      <include>com.google.guava:guava</include>
-                    </includes>
-                    <rules>
-                      <keep>
-                        <pattern>*.**</pattern>
-                      </keep>
-                    </rules>
-                  </configuration>
-                </execution>
-              </executions>
-            </plugin>
-      -->
         </plugins>
     </build>
 

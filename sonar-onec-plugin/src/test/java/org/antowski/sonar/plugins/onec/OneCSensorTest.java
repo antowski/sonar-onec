@@ -1,5 +1,8 @@
 package org.antowski.sonar.plugins.onec;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import org.antowski.onec.checks.CheckList;
 
 import org.junit.Ignore;
@@ -9,6 +12,7 @@ import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.fs.InputFile.Type;
 import org.sonar.api.batch.fs.internal.DefaultInputFile;
 import org.sonar.api.batch.fs.internal.FileMetadata;
+import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.rule.ActiveRules;
 import org.sonar.api.batch.rule.CheckFactory;
 import org.sonar.api.batch.rule.internal.ActiveRulesBuilder;
@@ -124,12 +128,16 @@ public class OneCSensorTest {
     }
 */
     private DefaultInputFile inputFile(String fileName) {
-        DefaultInputFile inputFile = new DefaultInputFile("moduleKey", fileName)
-            .setModuleBaseDir(OneCTestUtils.getModuleBaseDir().toPath())
-            .setType(Type.MAIN)
-            .setLanguage(OneC.KEY);
-        inputFile.initMetadata(new FileMetadata().readMetadata(inputFile.file(), Charsets.UTF_8));
-        return inputFile;
+        try {
+            return TestInputFileBuilder.create("moduleKey", fileName)
+                 .setModuleBaseDir(OneCTestUtils.getModuleBaseDir().toPath())
+                 .setType(Type.MAIN)
+                 .setCharset(Charset.defaultCharset())
+                 .setLanguage(OneC.KEY)
+                 .initMetadata(new String(java.nio.file.Files.readAllBytes(new File("src/test/resources/" + fileName).toPath()), StandardCharsets.UTF_8)).build();
+        } catch (IOException e) {
+            throw new IllegalStateException("File not found", e);
+        }
     }
 
 }

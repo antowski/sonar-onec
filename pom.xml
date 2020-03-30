@@ -2,20 +2,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!--
-    <parent>
-      <groupId>org.sonarsource.parent</groupId>
-      <artifactId>parent</artifactId>
-      <version>38</version>
-    </parent>
-    -->
-
     <groupId>org.antowski.onec</groupId>
     <artifactId>onec</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>Onec</name>
+    <name>SonarQube 1C:Enterprise 7.7 Plugin</name>
     <description>Enables analysis source files on 1C:Enterprise 7.7 embedded programming language</description>
     <inceptionYear>2017</inceptionYear>
     <organization>
@@ -46,44 +38,38 @@
 
     <properties>
 
-        <!-- license -->
-        <license.licenseName>lgpl_v3</license.licenseName>
-        <license.projectName>SonarQube 1C:Enterprise 7.7 Plugin</license.projectName>
-        <license.addJavaLicenseAfterPackage>false</license.addJavaLicenseAfterPackage>
-        <license.emptyLineAfterHeader>true</license.emptyLineAfterHeader>
-        <license.useJavaNoReformatCommentStartTag>false</license.useJavaNoReformatCommentStartTag>
-        <license.title>SonarQube 1C:Enterprise 7.7 Plugin</license.title>
-        <license.owner>Andrei Dzehalevich</license.owner>
-        <license.mailto>antowski@gmail.com</license.mailto>
-
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <timestamp>${maven.build.timestamp}</timestamp>
+        <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm:ssZ</maven.build.timestamp.format>
+        <gitRepositoryName>sonar-onec</gitRepositoryName>
 
+        <!-- 1C 7.7 plugin configuration -->
         <sonar.pluginClass>org.antowski.plugins.onec.OneCPlugin</sonar.pluginClass>
-        <sonar.pluginName>1C:Enterprise 7.7</sonar.pluginName>
-        <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
 
-        <!-- versions -->
-
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-
-        <sonar.apiVersion>6.2</sonar.apiVersion>
+        <maven.min.version>3.3.9</maven.min.version>
         <jdk.min.version>1.8</jdk.min.version>
 
-        <assertj.version>3.5.2</assertj.version>
-        <commons.io.version>2.5</commons.io.version>
-        <commons.lang.version>2.6</commons.lang.version>
-        <junit.version>4.12</junit.version>
-        <maven.project.version>2.2.1</maven.project.version>
-        <mockito.version>1.10.19</mockito.version>
-        <slf4j.version>1.7.21</slf4j.version>
-        <sonar.version>6.2</sonar.version>
-        <sonar.orchestrator.version>3.13</sonar.orchestrator.version>
-        <sonarlint-core.version>2.4.1</sonarlint-core.version>
-        <sslr.version>1.21</sslr.version>
-        <sslr-squid-bridge.version>2.6.1</sslr-squid-bridge.version>
-        <guava.version>21.0</guava.version>
-        <gson.version>2.6.2</gson.version>
+        <!-- plugin versions -->
+        <version.compiler.plugin>3.8.1</version.compiler.plugin>
+        <version.sonar-packaging.plugin>1.18.0.372</version.sonar-packaging.plugin>
+
+        <!-- JAR versions -->
+        <version.commons-lang>2.6</version.commons-lang>
+        <version.sonar-api>7.9</version.sonar-api>
+        <version.analyzer.commons>1.11.0.541</version.analyzer.commons>
+        <version.assertj>3.5.2</version.assertj>
+        <version.junit>4.12</version.junit>
+        <version.mockito>1.10.19</version.mockito>
+        <version.sslr>1.23</version.sslr>
+        <version.sslr-squid-bridge>2.6.1</version.sslr-squid-bridge>
+        <version.guava>23.4-jre</version.guava>
+
+        <!-- To configure maven-license-plugin to check license headers -->
+        <license.name>GNU LGPL v3</license.name>
+        <license.title>${project.name}</license.title>
+        <license.years>${project.inceptionYear}-2020</license.years>
+        <license.owner>Andrei Dzehalevich</license.owner>
+        <license.mailto>antowski AT gmail DOT com</license.mailto>
 
     </properties>
 
@@ -93,115 +79,107 @@
             <dependency>
                 <groupId>org.sonarsource.sonarqube</groupId>
                 <artifactId>sonar-plugin-api</artifactId>
-                <!-- minimal version of SonarQube to support. Note that the groupId was "org.codehaus.sonar" before version 5.2 -->
-                <version>${sonar.apiVersion}</version>
-                <!-- mandatory scope -->
+                <version>${version.sonar-api}</version>
                 <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${version.guava}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.sonarsource.analyzer-commons</groupId>
+                <artifactId>sonar-analyzer-commons</artifactId>
+                <version>${version.analyzer.commons}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonarsource.sslr</groupId>
                 <artifactId>sslr-core</artifactId>
-                <version>${sslr.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.sonarsource.sslr-squid-bridge</groupId>
-                <artifactId>sslr-squid-bridge</artifactId>
-                <version>${sslr-squid-bridge.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.codehaus.sonar.sslr</groupId>
-                        <artifactId>sslr-core</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.codehaus.sonar.sslr</groupId>
-                        <artifactId>sslr-xpath</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.codehaus.sonar</groupId>
-                        <artifactId>sonar-plugin-api</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.picocontainer</groupId>
-                        <artifactId>picocontainer</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.slf4j</groupId>
-                        <artifactId>slf4j-api</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.slf4j</groupId>
-                        <artifactId>jcl-over-slf4j</artifactId>
-                    </exclusion>
-                </exclusions>
+                <version>${version.sslr}</version>
             </dependency>
 
             <dependency>
                 <groupId>commons-lang</groupId>
                 <artifactId>commons-lang</artifactId>
-                <version>${commons.lang.version}</version>
+                <version>${version.commons-lang}</version>
             </dependency>
 
-            <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>${commons.io.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.version}</version>
-                <scope>provided</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-log4j12</artifactId>
-                <version>${slf4j.version}</version>
-                <scope>provided</scope>
-            </dependency>
-
-            <!-- test dependencies -->
             <dependency>
                 <groupId>org.sonarsource.sonarqube</groupId>
                 <artifactId>sonar-testing-harness</artifactId>
-                <version>${sonar.version}</version>
+                <version>${version.sonar-api}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.sonarsource.sslr</groupId>
                 <artifactId>sslr-testing-harness</artifactId>
-                <version>${sslr.version}</version>
+                <version>${version.sslr}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
+                <version>${version.junit}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.mockito</groupId>
-                <artifactId>mockito-all</artifactId>
-                <version>${mockito.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.maven</groupId>
-                <artifactId>maven-project</artifactId>
-                <version>${maven.project.version}</version>
+                <artifactId>mockito-core</artifactId>
+                <version>${version.mockito}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
-                <version>${assertj.version}</version>
+                <version>${version.assertj}</version>
+                <scope>test</scope>
             </dependency>
 
         </dependencies>
 
     </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${version.compiler.plugin}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.sonarsource.sonar-packaging-maven-plugin</groupId>
+                    <artifactId>sonar-packaging-maven-plugin</artifactId>
+                    <version>${version.sonar-packaging.plugin}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${jdk.min.version}</source>
+                    <target>${jdk.min.version}</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.sonarsource.sonar-packaging-maven-plugin</groupId>
+                <artifactId>sonar-packaging-maven-plugin</artifactId>
+                <version>${version.sonar-packaging.plugin}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <pluginClass>${sonar.pluginClass}</pluginClass>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
 
 </project>

@@ -7,6 +7,8 @@ import org.antowski.plugins.onec.api.tree.Tree.Kind;
 
 import java.util.Collection;
 import java.util.List;
+import org.antowski.plugins.onec.api.tree.lexical.SyntaxToken;
+import org.antowski.plugins.onec.api.tree.lexical.SyntaxTrivia;
 
 public abstract class SubscriptionVisitor implements TreeVisitor {
 
@@ -23,7 +25,11 @@ public abstract class SubscriptionVisitor implements TreeVisitor {
         // Default behavior : do nothing.
     }
 
-    public void visitFile(Tree Tree) {
+    public void visitToken(SyntaxToken syntaxToken) {
+        // default behaviour is to do nothing
+    }
+
+    public void visitTrivia(SyntaxTrivia syntaxTrivia) {
         // default behaviour is to do nothing
     }
 
@@ -40,7 +46,6 @@ public abstract class SubscriptionVisitor implements TreeVisitor {
     @Override
     public final void scanTree(TreeVisitorContext context) {
         this.context = context;
-        visitFile(context.getTopTree());
         scanTree(context.getTopTree());
         leaveFile(context.getTopTree());
     }
