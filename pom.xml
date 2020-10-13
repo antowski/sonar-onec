@@ -58,7 +58,7 @@
         <version.sonar-api>7.9</version.sonar-api>
         <version.analyzer.commons>1.11.0.541</version.analyzer.commons>
         <version.assertj>3.5.2</version.assertj>
-        <version.junit>4.12</version.junit>
+        <version.junit>4.13.1</version.junit>
         <version.mockito>1.10.19</version.mockito>
         <version.sslr>1.23</version.sslr>
         <version.sslr-squid-bridge>2.6.1</version.sslr-squid-bridge>
